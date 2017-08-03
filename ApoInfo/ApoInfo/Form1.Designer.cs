@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_main));
             this.lbl_result1_1 = new System.Windows.Forms.Label();
             this.btn_get = new System.Windows.Forms.Button();
             this.lbl_result2_1 = new System.Windows.Forms.Label();
@@ -35,6 +37,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lbl_result1_2 = new System.Windows.Forms.Label();
             this.lbl_result2_2 = new System.Windows.Forms.Label();
+            this.lbl_date = new System.Windows.Forms.Label();
+            this.tmr_hideCursor = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // lbl_result1_1
@@ -111,12 +115,31 @@
             this.lbl_result2_2.TabIndex = 6;
             this.lbl_result2_2.Text = "N/A";
             // 
+            // lbl_date
+            // 
+            this.lbl_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_date.AutoSize = true;
+            this.lbl_date.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.lbl_date.Location = new System.Drawing.Point(1175, 19);
+            this.lbl_date.Name = "lbl_date";
+            this.lbl_date.Size = new System.Drawing.Size(170, 15);
+            this.lbl_date.TabIndex = 7;
+            this.lbl_date.Text = "Oldenburg, den dd.MM.yy";
+            this.lbl_date.Click += new System.EventHandler(this.lbl_date_Click);
+            // 
+            // tmr_hideCursor
+            // 
+            this.tmr_hideCursor.Enabled = true;
+            this.tmr_hideCursor.Interval = 1000;
+            this.tmr_hideCursor.Tick += new System.EventHandler(this.tmr_hideCursor_Tick);
+            // 
             // frm_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1385, 726);
+            this.Controls.Add(this.lbl_date);
             this.Controls.Add(this.lbl_result2_2);
             this.Controls.Add(this.lbl_result1_2);
             this.Controls.Add(this.label2);
@@ -124,9 +147,11 @@
             this.Controls.Add(this.lbl_result2_1);
             this.Controls.Add(this.btn_get);
             this.Controls.Add(this.lbl_result1_1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frm_main";
-            this.Text = "Form1";
+            this.Text = "Oldenburger-Apotheken.de/Notdienst";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frm_main_MouseMove);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,6 +166,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lbl_result1_2;
         private System.Windows.Forms.Label lbl_result2_2;
+        private System.Windows.Forms.Label lbl_date;
+        private System.Windows.Forms.Timer tmr_hideCursor;
     }
 }
 

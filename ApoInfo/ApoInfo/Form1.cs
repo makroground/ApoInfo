@@ -14,6 +14,10 @@ namespace ApoInfo
 {
     public partial class frm_main : Form
     {
+        private TimeSpan timeoutToHideCursor;
+        private DateTime lastMouseMove;
+        private Boolean isCursorHidden;
+
         public frm_main()
         {
             InitializeComponent();
@@ -21,7 +25,13 @@ namespace ApoInfo
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            timeoutToHideCursor = TimeSpan.FromSeconds(5);
+
+            lbl_date.Text = "Oldenburg, den " + DateTime.Now.ToString("dd.MM.yyyy");
+
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+            this.TopMost = true;
         }
 
         private void btn_get_Click(object sender, EventArgs e)
@@ -52,22 +62,19 @@ namespace ApoInfo
             string[] delimiters1 = new string[] { "<TR>", "</TR>" };
             string[] dataSet1;
             string dataOfDay = string.Empty;
+            string dateOfToday = DateTime.Now.ToString("dd.MM.yy");
 
             dataSet1 = result.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
-
-            int row = 1;
+            
             Boolean resultDayFound = false;
             foreach (string s in dataSet1)
             {
-                if (s.Contains("03.08.17"))
+                if (s.Contains(dateOfToday))
                 {
                     dataOfDay = s;
-                    //lbl_result.Text = "Ergebnis " + row + ":   " + s;
+
                     resultDayFound = true;
                 }
-
-                //lbl_result.Text += row.ToString() + ":   " + s + '\n';
-                row++;
             }
 
 
@@ -75,7 +82,10 @@ namespace ApoInfo
 
             if (!resultDayFound)
             {
-                lbl_result1_1.Text = "Kein Notdienst registriert.";
+                lbl_result1_1.Text = "Fehler. Kein Notdienst registriert.";
+                lbl_result1_2.Text = "";
+                lbl_result2_1.Text = "Fehler. Kein Notdienst registriert.";
+                lbl_result2_2.Text = "";
             }
             else
             {
@@ -107,9 +117,9 @@ namespace ApoInfo
 
                             string[] dataSet3 = s.Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
 
-                            dataOfFirst = dataSet3[0];
+                            dataOfFirst = dataSet3[0].Trim();
 
-                            dataOfFirst2 = dataSet3[1];
+                            dataOfFirst2 = dataSet3[1].Trim();
                         }
                         else
                         {
@@ -125,9 +135,9 @@ namespace ApoInfo
 
                             string[] dataSet4 = s.Split(delimiters4, StringSplitOptions.RemoveEmptyEntries);
 
-                            dataOfSecond = dataSet4[0];
+                            dataOfSecond = dataSet4[0].Trim();
 
-                            dataOfSecond2 = dataSet4[1];
+                            dataOfSecond2 = dataSet4[1].Trim();
                         }
                         else
                         {
@@ -138,33 +148,65 @@ namespace ApoInfo
                     dayRow++;
                 }
 
-                lbl_result1_1.Text = dataOfFirst;
+                lbl_result1_1.Text = decodeHtml(dataOfFirst);
                 if (dataOfFirst2 == String.Empty)
                 {
                     lbl_result1_2.Text = "";
                 }
                 else
                 {
-                    lbl_result1_2.Text = dataOfFirst2;
+                    lbl_result1_2.Text = decodeHtml(dataOfFirst2);
                 }
 
-                lbl_result2_1.Text = dataOfSecond;
+                lbl_result2_1.Text = decodeHtml(dataOfSecond);
                 if (dataOfSecond2 == String.Empty)
                 {
                     lbl_result2_2.Text = "";
                 }
                 else
                 {
-                    lbl_result2_2.Text = dataOfSecond2;
+                    lbl_result2_2.Text = decodeHtml(dataOfSecond2);
                 }
             }
+        }
 
+        private string decodeHtml (String s)
+        {
+            return WebUtility.HtmlDecode(s);
+        }
+
+        private void frm_main_MouseMove(object sender, MouseEventArgs e)
+        {
+            lastMouseMove = DateTime.Now;
+
+            if (isCursorHidden)
+            {
+                Cursor.Show();
+                isCursorHidden = false;
+            }
+        }
+
+        private void tmr_hideCursor_Tick(object sender, EventArgs e)
+        {
+            TimeSpan timeHidden = DateTime.Now - lastMouseMove;
+            if (timeHidden >= timeoutToHideCursor && !isCursorHidden)
+            {
+                Cursor.Hide();
+                isCursorHidden = true;
+            }
+        }
+
+        private void lbl_date_Click(object sender, EventArgs e)
+        {
+            DialogResult result;
+
+            result = MessageBox.Show(this, "Wollen Sie das Programm wirklich beenden?", "Schließen?", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
             
-
-
-
-            //lbl_result.Text = result;
-
         }
     }
 }
