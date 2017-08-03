@@ -25,6 +25,7 @@ namespace ApoInfo
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             timeoutToHideCursor = TimeSpan.FromSeconds(5);
 
             lbl_date.Text = "Oldenburg, den " + DateTime.Now.ToString("dd.MM.yyyy");
@@ -32,6 +33,62 @@ namespace ApoInfo
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
             this.TopMost = true;
+
+            setSkaling();
+
+        }
+
+        private void setSkaling()
+        {
+
+            int shrink4to3_1 = 0;
+            int shrink4to3_2 = 0;
+
+            if (is4to3Display())
+            {
+                shrink4to3_1 = 2;
+                shrink4to3_2 = 1;
+            }
+
+            skalingLabelLeft(label1, 20, 8 - shrink4to3_1, 3, FontStyle.Bold);
+            skalingLabelLeft(lbl_result1_1, 37, 4 - shrink4to3_2, 6, FontStyle.Regular);
+            skalingLabelLeft(lbl_result1_2, 47, 4 - shrink4to3_2, 6, FontStyle.Regular);
+            skalingLabelLeft(label2, 65, 8 - shrink4to3_1, 3, FontStyle.Bold);
+            skalingLabelLeft(lbl_result2_1, 82, 4 - shrink4to3_2, 6, FontStyle.Regular);
+            skalingLabelLeft(lbl_result2_2, 92, 4 - shrink4to3_2, 6, FontStyle.Regular);
+
+        }
+
+        private void skalingLabelCenter(Label lbl, int percentTop, int percentFont, int percentPaddingLeft)
+        {
+
+            lbl.Font = new Font(lbl.Font.Name, this.Height / 100 * (percentFont), FontStyle.Bold);
+            lbl.Top = this.Height / 100 * percentTop;
+            lbl.Left = ((this.Width - lbl.Width) / 2) + (this.Width / 100 * percentPaddingLeft);
+
+        }
+
+        private void skalingLabelLeft(Label lbl, int percentTop, int percentFont, int percentPaddingLeft, FontStyle fontStyle)
+        {
+
+            lbl.Font = new Font(lbl.Font.Name, this.Height / 100 * (percentFont), fontStyle);
+            lbl.Top = this.Height / 100 * percentTop;
+            lbl.Left = this.Width / 100 * percentPaddingLeft;
+        }
+
+        private bool is4to3Display()
+        {
+
+            Double faktor = (double)this.Width / this.Height;
+            if (faktor < 1.77)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         private void btn_get_Click(object sender, EventArgs e)
@@ -168,6 +225,7 @@ namespace ApoInfo
                     lbl_result2_2.Text = decodeHtml(dataOfSecond2);
                 }
             }
+
         }
 
         private string decodeHtml (String s)
@@ -196,8 +254,10 @@ namespace ApoInfo
             }
         }
 
-        private void lbl_date_Click(object sender, EventArgs e)
+        private void lbl_date_Click(object sender, EventArgs e) 
         {
+            tmr_hideCursor.Stop();
+
             DialogResult result;
 
             result = MessageBox.Show(this, "Wollen Sie das Programm wirklich beenden?", "Schließen?", MessageBoxButtons.YesNo);
@@ -205,6 +265,10 @@ namespace ApoInfo
             if (result == DialogResult.Yes)
             {
                 Application.Exit();
+            }
+            else
+            {
+                tmr_hideCursor.Start();
             }
             
         }
