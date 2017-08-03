@@ -27,7 +27,8 @@ namespace ApoInfo
         private void btn_get_Click(object sender, EventArgs e)
         {
 
-            lbl_result.Text = "";
+            lbl_result1_1.Text = "";
+            lbl_result2_1.Text = "";
 
             string result = string.Empty;
             string url = @"http://oldenburger-apotheken.de/notdienst";
@@ -49,14 +50,14 @@ namespace ApoInfo
 
 
             string[] delimiters1 = new string[] { "<TR>", "</TR>" };
-            string[] dataSets;
+            string[] dataSet1;
             string dataOfDay = string.Empty;
 
-            dataSets = result.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
+            dataSet1 = result.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
 
             int row = 1;
             Boolean resultDayFound = false;
-            foreach (string s in dataSets)
+            foreach (string s in dataSet1)
             {
                 if (s.Contains("03.08.17"))
                 {
@@ -74,8 +75,9 @@ namespace ApoInfo
 
             if (!resultDayFound)
             {
-                lbl_result.Text = "Kein Notdienst registriert.";
-            } else
+                lbl_result1_1.Text = "Kein Notdienst registriert.";
+            }
+            else
             {
 
 
@@ -87,26 +89,74 @@ namespace ApoInfo
                 string[] delimiters2 = new string[] { "<TD ALIGN=LEFT VALIGN=TOP><FONT SIZE=1 COLOR=\"#00CC00\">", "<TD ALIGN=LEFT VALIGN=TOP><FONT SIZE=1 COLOR=\"#FF0000\">", "</FONT></TD>" };
 
                 string dataOfFirst = string.Empty;
+                string dataOfFirst2 = string.Empty;
                 string dataOfSecond = string.Empty;
+                string dataOfSecond2 = string.Empty;
 
-                dataSets = dataOfDay.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
+                string[] dataSet2 = dataOfDay.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
 
                 int dayRow = 1;
-                foreach (string s in dataSets)
+                foreach (string s in dataSet2)
                 {
                     if (dayRow == 4)
                     {
-                        dataOfFirst = s;
-                    } else if (dayRow == 6)
+
+                        if (s.Contains("<BR>"))
+                        {
+                            string[] delimiters3 = new string[] { "und<BR>", "<BR>und" };
+
+                            string[] dataSet3 = s.Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
+
+                            dataOfFirst = dataSet3[0];
+
+                            dataOfFirst2 = dataSet3[1];
+                        }
+                        else
+                        {
+                            dataOfFirst = s;
+                        }
+
+                    }
+                    else if (dayRow == 6)
                     {
-                        dataOfSecond = s;
+                        if (s.Contains("<BR>"))
+                        {
+                            string[] delimiters4 = new string[] { "und<BR>", "<BR>und" };
+
+                            string[] dataSet4 = s.Split(delimiters4, StringSplitOptions.RemoveEmptyEntries);
+
+                            dataOfSecond = dataSet4[0];
+
+                            dataOfSecond2 = dataSet4[1];
+                        }
+                        else
+                        {
+                            dataOfSecond = s;
+                        }
                     }
                     
                     dayRow++;
                 }
 
-                lbl_result.Text = "9 - 9 Uhr:    " + dataOfFirst + '\n';
-                lbl_result.Text += "9 - 22 Uhr:  " + dataOfSecond;
+                lbl_result1_1.Text = dataOfFirst;
+                if (dataOfFirst2 == String.Empty)
+                {
+                    lbl_result1_2.Text = "";
+                }
+                else
+                {
+                    lbl_result1_2.Text = dataOfFirst2;
+                }
+
+                lbl_result2_1.Text = dataOfSecond;
+                if (dataOfSecond2 == String.Empty)
+                {
+                    lbl_result2_2.Text = "";
+                }
+                else
+                {
+                    lbl_result2_2.Text = dataOfSecond2;
+                }
             }
 
             
