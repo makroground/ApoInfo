@@ -28,7 +28,7 @@ namespace ApoInfo
 
             timeoutToHideCursor = TimeSpan.FromSeconds(5);
 
-            lbl_date.Text = "Oldenburg, den " + DateTime.Now.ToString("dd.MM.yyyy");
+            lbl_date.Text = "Oldenburg, den " + DateTime.Now.ToString("dd.MM.yyyy") + "  [Schließen]";
 
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
@@ -36,30 +36,40 @@ namespace ApoInfo
 
             setSkaling();
 
+            getDataFromWebsite();
         }
 
         private void setSkaling()
         {
+            setPanels();
 
             int shrink4to3_1 = 0;
             int shrink4to3_2 = 0;
 
             if (is4to3Display())
             {
-                shrink4to3_1 = 2;
-                shrink4to3_2 = 1;
+                shrink4to3_1 = 30;
+                shrink4to3_2 = 15;
             }
 
-            skalingLabelLeft(label1, 20, 8 - shrink4to3_1, 3, FontStyle.Bold);
-            skalingLabelLeft(lbl_result1_1, 37, 4 - shrink4to3_2, 6, FontStyle.Regular);
-            skalingLabelLeft(lbl_result1_2, 47, 4 - shrink4to3_2, 6, FontStyle.Regular);
-            skalingLabelLeft(label2, 65, 8 - shrink4to3_1, 3, FontStyle.Bold);
-            skalingLabelLeft(lbl_result2_1, 82, 4 - shrink4to3_2, 6, FontStyle.Regular);
-            skalingLabelLeft(lbl_result2_2, 92, 4 - shrink4to3_2, 6, FontStyle.Regular);
+            pbx_apota.Size = new Size(this.Height / 100 * 25, this.Height / 100 * 25);
+            pbx_apota.Top = this.Height / 100 * 1;
+            pbx_apota.Left = this.Height / 100 * 2;
+
+            lbl_title.Font = new Font(lbl_title.Font.Name, this.Height / 100 * 20, GraphicsUnit.Pixel);
+            lbl_title.Top = this.Height / 100 * 1;
+            lbl_title.Left = (pbx_apota.Left * 2) + pbx_apota.Width;
+
+            skalingLabelLeft(label1, pnl_first1, 0, 95 - shrink4to3_1, 3, FontStyle.Bold);
+            skalingLabelLeft(lbl_result1_1, pnl_result1_1, 15, 25 - shrink4to3_2, 15, FontStyle.Regular);
+            skalingLabelLeft(lbl_result1_2, pnl_result1_2, 15, 25 - shrink4to3_2, 15, FontStyle.Regular);
+            skalingLabelLeft(label2, pnl_second1, 0, 95 - shrink4to3_1, 3, FontStyle.Bold);
+            skalingLabelLeft(lbl_result2_1, pnl_result2_1, 15, 25 - shrink4to3_2, 15, FontStyle.Regular);
+            skalingLabelLeft(lbl_result2_2, pnl_result2_2, 15, 25 - shrink4to3_2, 15, FontStyle.Regular);
 
         }
 
-        private void skalingLabelCenter(Label lbl, int percentTop, int percentFont, int percentPaddingLeft)
+        private void skalingLabelCenter(Label lbl, int percentTop, float percentFont, int percentPaddingLeft)
         {
 
             lbl.Font = new Font(lbl.Font.Name, this.Height / 100 * (percentFont), FontStyle.Bold);
@@ -68,12 +78,12 @@ namespace ApoInfo
 
         }
 
-        private void skalingLabelLeft(Label lbl, int percentTop, int percentFont, int percentPaddingLeft, FontStyle fontStyle)
+        private void skalingLabelLeft(Label lbl, Panel innerPanel, int percentTop, int percentFont, int percentPaddingLeft, FontStyle fontStyle)
         {
 
-            lbl.Font = new Font(lbl.Font.Name, this.Height / 100 * (percentFont), fontStyle);
-            lbl.Top = this.Height / 100 * percentTop;
-            lbl.Left = this.Width / 100 * percentPaddingLeft;
+            lbl.Font = new Font(lbl.Font.Name, innerPanel.Height / 100 * (percentFont), fontStyle, GraphicsUnit.Pixel);
+            lbl.Top = innerPanel.Height / 100 * percentTop;
+            lbl.Left = innerPanel.Width / 100 * percentPaddingLeft;
         }
 
         private bool is4to3Display()
@@ -91,9 +101,52 @@ namespace ApoInfo
 
         }
 
-        private void btn_get_Click(object sender, EventArgs e)
+        private void setPanels()
         {
+            skallingPanelCenter(pnl_first1, 30, 3, 13);
 
+            pnl_result1_1.Top = this.Height / 100 * 45;
+            pnl_result1_1.Height = this.Height / 100 * 18;
+            pnl_result1_1.Left = this.Width / 100 * 3;
+            pnl_result1_1.Width = pnl_first1.Width / 2;
+
+            pnl_result1_2.Top = this.Height / 100 * 45;
+            pnl_result1_2.Height = this.Height / 100 * 18;
+            pnl_result1_2.Left = this.Width / 100 * 3 + pnl_result1_1.Width;
+            pnl_result1_2.Width = pnl_first1.Width / 2;
+            
+            skallingPanelCenter(pnl_second1, 70, 3, 13);
+
+            pnl_result2_1.Top = this.Height / 100 * 85;
+            pnl_result2_1.Height = this.Height / 100 * 18;
+            pnl_result2_1.Left = this.Width / 100 * 3;
+            pnl_result2_1.Width = pnl_second1.Width / 2;
+
+            pnl_result2_2.Top = this.Height / 100 * 85;
+            pnl_result2_2.Height = this.Height / 100 * 18;
+            pnl_result2_2.Left = this.Width / 100 * 3 + pnl_result2_1.Width;
+            pnl_result2_2.Width = pnl_second1.Width / 2;
+
+        }
+
+        private void skallingPanelCenter(Panel pnl, int percentTop, int percentPaddingLeft, int percentHeight)
+        {
+            pnl.Top = this.Height / 100 * percentTop;
+            pnl.Height = this.Height / 100 * percentHeight;
+            int paddingLeft = this.Width / 100 * percentPaddingLeft;
+            pnl.Width = this.Width - (paddingLeft * 2);
+            pnl.Left = paddingLeft;
+        }
+
+        private void skallingPanel(Panel pnl, int percentTop, int percentPaddingLeft, int percentHeight)
+        {
+            pnl.Top = this.Height / 100 * percentTop;
+            pnl.Height = this.Height / 100 * percentHeight;
+            pnl.Left = this.Width / 100 * percentPaddingLeft;
+        }
+
+        private void getDataFromWebsite()
+        {
             lbl_result1_1.Text = "";
             lbl_result2_1.Text = "";
 
@@ -122,7 +175,7 @@ namespace ApoInfo
             string dateOfToday = DateTime.Now.ToString("dd.MM.yy");
 
             dataSet1 = result.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
-            
+
             Boolean resultDayFound = false;
             foreach (string s in dataSet1)
             {
@@ -201,8 +254,21 @@ namespace ApoInfo
                             dataOfSecond = s;
                         }
                     }
-                    
+
                     dayRow++;
+                }
+
+                string[] delimiters5 = new string[] { "(", ")" };
+                string[] dataSet5 = dataOfFirst.Split(delimiters5, StringSplitOptions.RemoveEmptyEntries);
+
+                string[] delimiters6 = new string[] { "-" };
+                string[] dataSet6 = dataSet5[1].Split(delimiters6, StringSplitOptions.RemoveEmptyEntries);
+
+                dataOfFirst = dataSet5[0] + "\n";
+
+                foreach (string s in dataSet6)
+                {
+                    dataOfFirst += "\n" + s.Trim();
                 }
 
                 lbl_result1_1.Text = decodeHtml(dataOfFirst);
@@ -212,7 +278,33 @@ namespace ApoInfo
                 }
                 else
                 {
+                    string[] delimiters7 = new string[] { "(", ")" };
+                    string[] dataSet7 = dataOfFirst2.Split(delimiters7, StringSplitOptions.RemoveEmptyEntries);
+
+                    string[] delimiters8 = new string[] { "-" };
+                    string[] dataSet8 = dataSet7[1].Split(delimiters8, StringSplitOptions.RemoveEmptyEntries);
+
+                    dataOfFirst2 = dataSet7[0] + "\n";
+
+                    foreach (string s in dataSet8)
+                    {
+                        dataOfFirst2 += "\n" + s.Trim();
+                    }
+
                     lbl_result1_2.Text = decodeHtml(dataOfFirst2);
+                }
+
+                string[] delimiters9 = new string[] { "(", ")" };
+                string[] dataSet9 = dataOfSecond.Split(delimiters9, StringSplitOptions.RemoveEmptyEntries);
+
+                string[] delimiters10 = new string[] { "-" };
+                string[] dataSet10 = dataSet9[1].Split(delimiters10, StringSplitOptions.RemoveEmptyEntries);
+
+                dataOfSecond = dataSet9[0] + "\n";
+
+                foreach (string s in dataSet10)
+                {
+                    dataOfSecond += "\n" + s.Trim();
                 }
 
                 lbl_result2_1.Text = decodeHtml(dataOfSecond);
@@ -222,10 +314,27 @@ namespace ApoInfo
                 }
                 else
                 {
+                    string[] delimiters11 = new string[] { "(", ")" };
+                    string[] dataSet11 = dataOfSecond2.Split(delimiters11, StringSplitOptions.RemoveEmptyEntries);
+
+                    string[] delimiters12 = new string[] { "-" };
+                    string[] dataSet12 = dataSet11[1].Split(delimiters12, StringSplitOptions.RemoveEmptyEntries);
+
+                    dataOfSecond2 = dataSet11[0] + "\n";
+
+                    foreach (string s in dataSet10)
+                    {
+                        dataOfSecond2 += "\n" + s.Trim();
+                    }
+
                     lbl_result2_2.Text = decodeHtml(dataOfSecond2);
                 }
             }
+        }
 
+        private void btn_get_Click(object sender, EventArgs e)
+        {
+            getDataFromWebsite();
         }
 
         private string decodeHtml (String s)
@@ -257,6 +366,7 @@ namespace ApoInfo
         private void lbl_date_Click(object sender, EventArgs e) 
         {
             tmr_hideCursor.Stop();
+            Cursor.Show();
 
             DialogResult result;
 
@@ -271,6 +381,11 @@ namespace ApoInfo
                 tmr_hideCursor.Start();
             }
             
+        }
+
+        private void trm_updateData_Tick(object sender, EventArgs e)
+        {
+            getDataFromWebsite();
         }
     }
 }
