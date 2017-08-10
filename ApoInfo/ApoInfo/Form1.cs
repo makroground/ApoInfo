@@ -28,11 +28,17 @@ namespace ApoInfo
 
             timeoutToHideCursor = TimeSpan.FromSeconds(5);
 
-            lbl_date.Text = "Oldenburg, den " + DateTime.Now.ToString("dd.MM.yyyy") + "  [Schließen]";
+            lbl_date.Text = "Oldenburg, den " + DateTime.Now.ToString("dd.MM.yyyy, H:mm") + " Uhr";
+            //lbl_time.Text = DateTime.Now.ToString("H:mm") + " Uhr";
 
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
             this.TopMost = true;
+
+            lbl_result1_1.Text = "-\n-\n-\n-\n-";
+            lbl_result1_2.Text = "-\n-\n-\n-\n-";
+            lbl_result2_1.Text = "-\n-\n-\n-\n-";
+            lbl_result2_2.Text = "-\n-\n-\n-\n-";
 
             setSkaling();
 
@@ -52,20 +58,60 @@ namespace ApoInfo
                 shrink4to3_2 = 15;
             }
 
-            pbx_apota.Size = new Size(this.Height / 100 * 25, this.Height / 100 * 25);
+            lbl_date.Font = new Font(lbl_date.Font.Name, 15, FontStyle.Bold, GraphicsUnit.Point);
+            lbl_date.Top = this.Height / 100 * 4;
+            lbl_date.Left = this.Width - lbl_date.Width - (this.Width / 100 * 5);
+
+            lbl_info.Font = new Font(lbl_info.Font.Name, 15, FontStyle.Bold, GraphicsUnit.Point);
+            lbl_info.Top = this.Height - lbl_info.Height - (this.Height / 100 * 2);
+            lbl_info.Left = (this.Width - lbl_info.Width) / 2;
+
+            /*lbl_time.Font = new Font(lbl_time.Font.Name, 20, FontStyle.Bold, GraphicsUnit.Point);
+            lbl_time.Top = this.Height / 100 * 2 + lbl_date.Height;
+            lbl_time.Left = this.Width - lbl_time.Width - (this.Width / 100 * 3);*/
+
+            pbx_apota.Size = new Size(this.Height / 100 * 23, this.Height / 100 * 23);
             pbx_apota.Top = this.Height / 100 * 1;
             pbx_apota.Left = this.Height / 100 * 2;
 
-            lbl_title.Font = new Font(lbl_title.Font.Name, this.Height / 100 * 20, GraphicsUnit.Pixel);
+            pbx_appqr.Size = new Size(this.Height / 100 * 40, this.Height / 100 * 18);
+            pbx_appqr.Top = this.Height / 100 * 6;
+            pbx_appqr.Left = this.Width - pbx_appqr.Width - (this.Width / 100 * 5);
+
+            lbl_title.Font = new Font(lbl_title.Font.Name, 130, GraphicsUnit.Point);
             lbl_title.Top = this.Height / 100 * 1;
             lbl_title.Left = (pbx_apota.Left * 2) + pbx_apota.Width;
 
-            skalingLabelLeft(label1, pnl_first1, 0, 95 - shrink4to3_1, 3, FontStyle.Bold);
-            skalingLabelLeft(lbl_result1_1, pnl_result1_1, 15, 25 - shrink4to3_2, 15, FontStyle.Regular);
-            skalingLabelLeft(lbl_result1_2, pnl_result1_2, 15, 25 - shrink4to3_2, 15, FontStyle.Regular);
-            skalingLabelLeft(label2, pnl_second1, 0, 95 - shrink4to3_1, 3, FontStyle.Bold);
-            skalingLabelLeft(lbl_result2_1, pnl_result2_1, 15, 25 - shrink4to3_2, 15, FontStyle.Regular);
-            skalingLabelLeft(lbl_result2_2, pnl_result2_2, 15, 25 - shrink4to3_2, 15, FontStyle.Regular);
+            label1.Font = new Font(label1.Font.Name, 50, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Top = (pnl_first1.Height - label1.Height) / 2;
+            label1.Left = pnl_first1.Width / 100 * 3;
+
+            lbl_result1_1.Font = new Font(lbl_result1_1.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_result1_1.Top = (pnl_result1_1.Height - lbl_result1_1.Height) / 2;
+            lbl_result1_1.Left = pnl_first1.Width / 100 * 6;
+
+            lbl_result1_2.Font = new Font(lbl_result1_2.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_result1_2.Top = (pnl_result1_2.Height - lbl_result1_2.Height) / 2;
+            lbl_result1_2.Left = pnl_first1.Width / 100 * 6;
+
+            label2.Font = new Font(label2.Font.Name, 50, FontStyle.Bold, GraphicsUnit.Point);
+            label2.Top = (pnl_second1.Height - label2.Height) / 2;
+            label2.Left = pnl_second1.Width / 100 * 3;
+
+            lbl_result2_1.Font = new Font(lbl_result2_1.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_result2_1.Top = (pnl_result1_1.Height - lbl_result1_1.Height) / 2;
+            lbl_result2_1.Left = pnl_second1.Width / 100 * 6;
+
+            lbl_result2_2.Font = new Font(lbl_result1_2.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_result2_2.Top = (pnl_result2_2.Height - lbl_result2_2.Height) / 2;
+            lbl_result2_2.Left = pnl_second1.Width / 100 * 6;
+
+            //skalingLabelLeft(label1, pnl_first1, 0, 70, 3, FontStyle.Bold);
+            //skalingLabelLeft(lbl_result1_1, pnl_result1_1, 15, 15, 15, FontStyle.Regular);
+            //skalingLabelLeft(lbl_result1_2, pnl_result1_2, 15, 15, 15, FontStyle.Regular);
+            //skalingLabelLeft(label2, pnl_second1, 0, 70, 3, FontStyle.Bold);
+            //skalingLabelLeft(lbl_result2_1, pnl_result2_1, 15, 15, 15, FontStyle.Regular);
+            //skalingLabelLeft(lbl_result2_2, pnl_result2_2, 15, 15, 15, FontStyle.Regular);
 
         }
 
@@ -81,7 +127,7 @@ namespace ApoInfo
         private void skalingLabelLeft(Label lbl, Panel innerPanel, int percentTop, int percentFont, int percentPaddingLeft, FontStyle fontStyle)
         {
 
-            lbl.Font = new Font(lbl.Font.Name, innerPanel.Height / 100 * (percentFont), fontStyle, GraphicsUnit.Pixel);
+            lbl.Font = new Font(lbl.Font.Name, innerPanel.Height / 100 * (percentFont), fontStyle, GraphicsUnit.Point);
             lbl.Top = innerPanel.Height / 100 * percentTop;
             lbl.Left = innerPanel.Width / 100 * percentPaddingLeft;
         }
@@ -103,27 +149,27 @@ namespace ApoInfo
 
         private void setPanels()
         {
-            skallingPanelCenter(pnl_first1, 30, 3, 13);
+            skallingPanelCenter(pnl_first1, 25, 3, 10);
 
-            pnl_result1_1.Top = this.Height / 100 * 45;
-            pnl_result1_1.Height = this.Height / 100 * 18;
+            pnl_result1_1.Top = this.Height / 100 * 35;
+            pnl_result1_1.Height = this.Height / 100 * 27;
             pnl_result1_1.Left = this.Width / 100 * 3;
             pnl_result1_1.Width = pnl_first1.Width / 2;
 
-            pnl_result1_2.Top = this.Height / 100 * 45;
-            pnl_result1_2.Height = this.Height / 100 * 18;
+            pnl_result1_2.Top = this.Height / 100 * 35;
+            pnl_result1_2.Height = this.Height / 100 * 27;
             pnl_result1_2.Left = this.Width / 100 * 3 + pnl_result1_1.Width;
             pnl_result1_2.Width = pnl_first1.Width / 2;
             
-            skallingPanelCenter(pnl_second1, 70, 3, 13);
+            skallingPanelCenter(pnl_second1, 65, 3, 10);
 
-            pnl_result2_1.Top = this.Height / 100 * 85;
-            pnl_result2_1.Height = this.Height / 100 * 18;
+            pnl_result2_1.Top = this.Height / 100 * 75;
+            pnl_result2_1.Height = this.Height / 100 * 27;
             pnl_result2_1.Left = this.Width / 100 * 3;
             pnl_result2_1.Width = pnl_second1.Width / 2;
 
-            pnl_result2_2.Top = this.Height / 100 * 85;
-            pnl_result2_2.Height = this.Height / 100 * 18;
+            pnl_result2_2.Top = this.Height / 100 * 75;
+            pnl_result2_2.Height = this.Height / 100 * 27;
             pnl_result2_2.Left = this.Width / 100 * 3 + pnl_result2_1.Width;
             pnl_result2_2.Width = pnl_second1.Width / 2;
 
@@ -147,8 +193,10 @@ namespace ApoInfo
 
         private void getDataFromWebsite()
         {
-            lbl_result1_1.Text = "";
-            lbl_result2_1.Text = "";
+            lbl_result1_1.Text = "-\n-\n-\n-\n-";
+            lbl_result1_2.Text = "-\n-\n-\n-\n-";
+            lbl_result2_1.Text = "-\n-\n-\n-\n-";
+            lbl_result2_2.Text = "-\n-\n-\n-\n-";
 
             string result = string.Empty;
             string url = @"http://oldenburger-apotheken.de/notdienst";
@@ -261,7 +309,7 @@ namespace ApoInfo
                 string[] delimiters5 = new string[] { "(", ")" };
                 string[] dataSet5 = dataOfFirst.Split(delimiters5, StringSplitOptions.RemoveEmptyEntries);
 
-                string[] delimiters6 = new string[] { "-" };
+                string[] delimiters6 = new string[] { "-", "–" };
                 string[] dataSet6 = dataSet5[1].Split(delimiters6, StringSplitOptions.RemoveEmptyEntries);
 
                 dataOfFirst = dataSet5[0] + "\n";
@@ -281,7 +329,7 @@ namespace ApoInfo
                     string[] delimiters7 = new string[] { "(", ")" };
                     string[] dataSet7 = dataOfFirst2.Split(delimiters7, StringSplitOptions.RemoveEmptyEntries);
 
-                    string[] delimiters8 = new string[] { "-" };
+                    string[] delimiters8 = new string[] { "-", "–" };
                     string[] dataSet8 = dataSet7[1].Split(delimiters8, StringSplitOptions.RemoveEmptyEntries);
 
                     dataOfFirst2 = dataSet7[0] + "\n";
@@ -297,7 +345,7 @@ namespace ApoInfo
                 string[] delimiters9 = new string[] { "(", ")" };
                 string[] dataSet9 = dataOfSecond.Split(delimiters9, StringSplitOptions.RemoveEmptyEntries);
 
-                string[] delimiters10 = new string[] { "-" };
+                string[] delimiters10 = new string[] { "-", "–" };
                 string[] dataSet10 = dataSet9[1].Split(delimiters10, StringSplitOptions.RemoveEmptyEntries);
 
                 dataOfSecond = dataSet9[0] + "\n";
@@ -317,7 +365,7 @@ namespace ApoInfo
                     string[] delimiters11 = new string[] { "(", ")" };
                     string[] dataSet11 = dataOfSecond2.Split(delimiters11, StringSplitOptions.RemoveEmptyEntries);
 
-                    string[] delimiters12 = new string[] { "-" };
+                    string[] delimiters12 = new string[] { "-", "–" };
                     string[] dataSet12 = dataSet11[1].Split(delimiters12, StringSplitOptions.RemoveEmptyEntries);
 
                     dataOfSecond2 = dataSet11[0] + "\n";
