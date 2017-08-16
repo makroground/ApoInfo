@@ -18,6 +18,12 @@ namespace ApoInfo
         private DateTime lastMouseMove;
         private Boolean isCursorHidden;
 
+        private String dateOfToday;
+
+        // Ergebnis von 0 bis 9 Uhr weiterhin gültig
+        private static int noRefreshTimeStart = 0;
+        private static int noRefreshTimeEnd = 9;
+
         public frm_main()
         {
             InitializeComponent();
@@ -59,7 +65,7 @@ namespace ApoInfo
             }
 
             lbl_date.Font = new Font(lbl_date.Font.Name, 15, FontStyle.Bold, GraphicsUnit.Point);
-            lbl_date.Top = this.Height / 100 * 4;
+            lbl_date.Top = this.Height / 100 * 3;
             lbl_date.Left = this.Width - lbl_date.Width - (this.Width / 100 * 5);
 
             lbl_info.Font = new Font(lbl_info.Font.Name, 15, FontStyle.Bold, GraphicsUnit.Point);
@@ -193,6 +199,19 @@ namespace ApoInfo
 
         private void getDataFromWebsite()
         {
+            if (DateTime.Now.Hour >= noRefreshTimeStart && DateTime.Now.Hour < noRefreshTimeEnd)
+            {
+                // Datum vom Vortag waehlen
+                // d.h. 12 Stunden zurueck
+                TimeSpan refreshDelay = TimeSpan.FromHours(12);
+                DateTime previousDate = DateTime.Now - refreshDelay;
+                dateOfToday = previousDate.ToString("dd.MM.yy");
+            }
+            else
+            {
+                dateOfToday = DateTime.Now.ToString("dd.MM.yy");
+            }
+
             lbl_result1_1.Text = "-\n-\n-\n-\n-";
             lbl_result1_2.Text = "-\n-\n-\n-\n-";
             lbl_result2_1.Text = "-\n-\n-\n-\n-";
@@ -220,7 +239,6 @@ namespace ApoInfo
             string[] delimiters1 = new string[] { "<TR>", "</TR>" };
             string[] dataSet1;
             string dataOfDay = string.Empty;
-            string dateOfToday = DateTime.Now.ToString("dd.MM.yy");
 
             dataSet1 = result.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
 
@@ -434,6 +452,15 @@ namespace ApoInfo
         private void trm_updateData_Tick(object sender, EventArgs e)
         {
             getDataFromWebsite();
+        }
+
+        private void tmr_updateOnce_Tick(object sender, EventArgs e)
+        {
+            // Ausloesen einer Aktuallisierung um 9 Uhr
+            if (DateTime.Now.Hour == 9 && DateTime.Now.Minute == 0 && DateTime.Now.Second == 0)
+            {
+                getDataFromWebsite();
+            }
         }
     }
 }
