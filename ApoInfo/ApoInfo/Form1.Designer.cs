@@ -51,6 +51,7 @@
             this.lbl_info = new System.Windows.Forms.Label();
             this.pbx_appqr = new System.Windows.Forms.PictureBox();
             this.tmr_updateOnce = new System.Windows.Forms.Timer(this.components);
+            this.lbl_neterror = new System.Windows.Forms.Label();
             this.pnl_first1.SuspendLayout();
             this.pnl_second1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbx_apota)).BeginInit();
@@ -78,7 +79,7 @@
             this.btn_get.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_get.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.btn_get.ForeColor = System.Drawing.Color.Black;
-            this.btn_get.Location = new System.Drawing.Point(196, -1);
+            this.btn_get.Location = new System.Drawing.Point(521, -1);
             this.btn_get.Name = "btn_get";
             this.btn_get.Size = new System.Drawing.Size(115, 28);
             this.btn_get.TabIndex = 1;
@@ -144,7 +145,7 @@
             this.lbl_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_date.AutoSize = true;
             this.lbl_date.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.lbl_date.Location = new System.Drawing.Point(1154, 21);
+            this.lbl_date.Location = new System.Drawing.Point(1479, 21);
             this.lbl_date.Name = "lbl_date";
             this.lbl_date.Size = new System.Drawing.Size(170, 15);
             this.lbl_date.TabIndex = 7;
@@ -249,7 +250,7 @@
             this.lbl_info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_info.AutoSize = true;
             this.lbl_info.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_info.Location = new System.Drawing.Point(74, 698);
+            this.lbl_info.Location = new System.Drawing.Point(142, 698);
             this.lbl_info.Name = "lbl_info";
             this.lbl_info.Size = new System.Drawing.Size(1204, 20);
             this.lbl_info.TabIndex = 15;
@@ -260,7 +261,7 @@
             // pbx_appqr
             // 
             this.pbx_appqr.Image = ((System.Drawing.Image)(resources.GetObject("pbx_appqr.Image")));
-            this.pbx_appqr.Location = new System.Drawing.Point(676, 59);
+            this.pbx_appqr.Location = new System.Drawing.Point(898, 7);
             this.pbx_appqr.Name = "pbx_appqr";
             this.pbx_appqr.Size = new System.Drawing.Size(352, 129);
             this.pbx_appqr.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -273,12 +274,27 @@
             this.tmr_updateOnce.Interval = 1000;
             this.tmr_updateOnce.Tick += new System.EventHandler(this.tmr_updateOnce_Tick);
             // 
+            // lbl_neterror
+            // 
+            this.lbl_neterror.AutoSize = true;
+            this.lbl_neterror.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_neterror.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.lbl_neterror.Location = new System.Drawing.Point(203, 118);
+            this.lbl_neterror.Name = "lbl_neterror";
+            this.lbl_neterror.Size = new System.Drawing.Size(909, 20);
+            this.lbl_neterror.TabIndex = 17;
+            this.lbl_neterror.Text = "Hinweiß: Die Aktuallität der Daten ist temporär nicht garantiert! Für aktuelle In" +
+    "fos bitte \'Meine Apotheke\' nutzen.";
+            this.lbl_neterror.UseMnemonic = false;
+            this.lbl_neterror.Visible = false;
+            // 
             // frm_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1041, 566);
+            this.ClientSize = new System.Drawing.Size(1366, 729);
+            this.Controls.Add(this.lbl_neterror);
             this.Controls.Add(this.pbx_appqr);
             this.Controls.Add(this.lbl_info);
             this.Controls.Add(this.pnl_result2_2);
@@ -338,6 +354,7 @@
         private System.Windows.Forms.Label lbl_info;
         private System.Windows.Forms.PictureBox pbx_appqr;
         private System.Windows.Forms.Timer tmr_updateOnce;
+        private System.Windows.Forms.Label lbl_neterror;
     }
 }
 

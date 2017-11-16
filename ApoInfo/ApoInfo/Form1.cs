@@ -39,7 +39,7 @@ namespace ApoInfo
 
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
-            this.TopMost = true;
+            //this.TopMost = true;
 
             lbl_result1_1.Text = "-\n-\n-\n-\n-";
             lbl_result1_2.Text = "-\n-\n-\n-\n-";
@@ -79,6 +79,10 @@ namespace ApoInfo
             pbx_apota.Size = new Size(this.Height / 100 * 23, this.Height / 100 * 23);
             pbx_apota.Top = this.Height / 100 * 1;
             pbx_apota.Left = this.Height / 100 * 2;
+
+            lbl_neterror.Font = new Font(lbl_neterror.Font.Name, 15, FontStyle.Bold, GraphicsUnit.Point);
+            lbl_neterror.Top = this.Height / 100 * 20;
+            lbl_neterror.Left = (pbx_apota.Left * 2) + pbx_apota.Width;
 
             pbx_appqr.Size = new Size(this.Height / 100 * 40, this.Height / 100 * 18);
             pbx_appqr.Top = this.Height / 100 * 6;
@@ -199,203 +203,214 @@ namespace ApoInfo
 
         private void getDataFromWebsite()
         {
-            if (DateTime.Now.Hour >= noRefreshTimeStart && DateTime.Now.Hour < noRefreshTimeEnd)
+            try
             {
-                // Datum vom Vortag waehlen
-                // d.h. 12 Stunden zurueck
-                TimeSpan refreshDelay = TimeSpan.FromHours(12);
-                DateTime previousDate = DateTime.Now - refreshDelay;
-                dateOfToday = previousDate.ToString("dd.MM.yy");
-            }
-            else
-            {
-                dateOfToday = DateTime.Now.ToString("dd.MM.yy");
-            }
-
-            lbl_result1_1.Text = "-\n-\n-\n-\n-";
-            lbl_result1_2.Text = "-\n-\n-\n-\n-";
-            lbl_result2_1.Text = "-\n-\n-\n-\n-";
-            lbl_result2_2.Text = "-\n-\n-\n-\n-";
-
-            string result = string.Empty;
-            string url = @"http://oldenburger-apotheken.de/notdienst";
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.AutomaticDecompression = DecompressionMethods.GZip;
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                result = reader.ReadToEnd();
-            }
-
-
-
-            // Datensatz fuer den heutigen Tag extrahieren
-
-
-
-            string[] delimiters1 = new string[] { "<TR>", "</TR>" };
-            string[] dataSet1;
-            string dataOfDay = string.Empty;
-
-            dataSet1 = result.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
-
-            Boolean resultDayFound = false;
-            foreach (string s in dataSet1)
-            {
-                if (s.Contains(dateOfToday))
+                if (DateTime.Now.Hour >= noRefreshTimeStart && DateTime.Now.Hour < noRefreshTimeEnd)
                 {
-                    dataOfDay = s;
-
-                    resultDayFound = true;
-                }
-            }
-
-
-
-
-            if (!resultDayFound)
-            {
-                lbl_result1_1.Text = "Fehler. Kein Notdienst registriert.";
-                lbl_result1_2.Text = "";
-                lbl_result2_1.Text = "Fehler. Kein Notdienst registriert.";
-                lbl_result2_2.Text = "";
-            }
-            else
-            {
-
-
-
-                // Datensatz der dritten und vierten Spalte extrahieren
-
-
-
-                string[] delimiters2 = new string[] { "<TD ALIGN=LEFT VALIGN=TOP><FONT SIZE=1 COLOR=\"#00CC00\">", "<TD ALIGN=LEFT VALIGN=TOP><FONT SIZE=1 COLOR=\"#FF0000\">", "</FONT></TD>" };
-
-                string dataOfFirst = string.Empty;
-                string dataOfFirst2 = string.Empty;
-                string dataOfSecond = string.Empty;
-                string dataOfSecond2 = string.Empty;
-
-                string[] dataSet2 = dataOfDay.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
-
-                int dayRow = 1;
-                foreach (string s in dataSet2)
-                {
-                    if (dayRow == 4)
-                    {
-
-                        if (s.Contains("<BR>"))
-                        {
-                            string[] delimiters3 = new string[] { "und<BR>", "<BR>und" };
-
-                            string[] dataSet3 = s.Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
-
-                            dataOfFirst = dataSet3[0].Trim();
-
-                            dataOfFirst2 = dataSet3[1].Trim();
-                        }
-                        else
-                        {
-                            dataOfFirst = s;
-                        }
-
-                    }
-                    else if (dayRow == 6)
-                    {
-                        if (s.Contains("<BR>"))
-                        {
-                            string[] delimiters4 = new string[] { "und<BR>", "<BR>und" };
-
-                            string[] dataSet4 = s.Split(delimiters4, StringSplitOptions.RemoveEmptyEntries);
-
-                            dataOfSecond = dataSet4[0].Trim();
-
-                            dataOfSecond2 = dataSet4[1].Trim();
-                        }
-                        else
-                        {
-                            dataOfSecond = s;
-                        }
-                    }
-
-                    dayRow++;
-                }
-
-                string[] delimiters5 = new string[] { "(", ")" };
-                string[] dataSet5 = dataOfFirst.Split(delimiters5, StringSplitOptions.RemoveEmptyEntries);
-
-                string[] delimiters6 = new string[] { "-", "–" };
-                string[] dataSet6 = dataSet5[1].Split(delimiters6, StringSplitOptions.RemoveEmptyEntries);
-
-                dataOfFirst = dataSet5[0] + "\n";
-
-                foreach (string s in dataSet6)
-                {
-                    dataOfFirst += "\n" + s.Trim();
-                }
-
-                lbl_result1_1.Text = decodeHtml(dataOfFirst);
-                if (dataOfFirst2 == String.Empty)
-                {
-                    lbl_result1_2.Text = "";
+                    // Datum vom Vortag waehlen
+                    // d.h. 12 Stunden zurueck
+                    TimeSpan refreshDelay = TimeSpan.FromHours(12);
+                    DateTime previousDate = DateTime.Now - refreshDelay;
+                    dateOfToday = previousDate.ToString("dd.MM.yy");
                 }
                 else
                 {
-                    string[] delimiters7 = new string[] { "(", ")" };
-                    string[] dataSet7 = dataOfFirst2.Split(delimiters7, StringSplitOptions.RemoveEmptyEntries);
+                    dateOfToday = DateTime.Now.ToString("dd.MM.yy");
+                }
 
-                    string[] delimiters8 = new string[] { "-", "–" };
-                    string[] dataSet8 = dataSet7[1].Split(delimiters8, StringSplitOptions.RemoveEmptyEntries);
+                lbl_result1_1.Text = "-\n-\n-\n-\n-";
+                lbl_result1_2.Text = "-\n-\n-\n-\n-";
+                lbl_result2_1.Text = "-\n-\n-\n-\n-";
+                lbl_result2_2.Text = "-\n-\n-\n-\n-";
 
-                    dataOfFirst2 = dataSet7[0] + "\n";
+                string result = string.Empty;
+                string url = @"http://oldenburger-apotheken.de/notdienst";
 
-                    foreach (string s in dataSet8)
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.AutomaticDecompression = DecompressionMethods.GZip;
+
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (Stream stream = response.GetResponseStream())
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    result = reader.ReadToEnd();
+                }
+
+
+
+                // Datensatz fuer den heutigen Tag extrahieren
+
+
+
+                string[] delimiters1 = new string[] { "<TR>", "</TR>" };
+                string[] dataSet1;
+                string dataOfDay = string.Empty;
+
+                dataSet1 = result.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
+
+                Boolean resultDayFound = false;
+                foreach (string s in dataSet1)
+                {
+                    if (s.Contains(dateOfToday))
                     {
-                        dataOfFirst2 += "\n" + s.Trim();
+                        dataOfDay = s;
+
+                        resultDayFound = true;
                     }
-
-                    lbl_result1_2.Text = decodeHtml(dataOfFirst2);
                 }
 
-                string[] delimiters9 = new string[] { "(", ")" };
-                string[] dataSet9 = dataOfSecond.Split(delimiters9, StringSplitOptions.RemoveEmptyEntries);
 
-                string[] delimiters10 = new string[] { "-", "–" };
-                string[] dataSet10 = dataSet9[1].Split(delimiters10, StringSplitOptions.RemoveEmptyEntries);
 
-                dataOfSecond = dataSet9[0] + "\n";
 
-                foreach (string s in dataSet10)
+                if (!resultDayFound)
                 {
-                    dataOfSecond += "\n" + s.Trim();
-                }
-
-                lbl_result2_1.Text = decodeHtml(dataOfSecond);
-                if (dataOfSecond2 == String.Empty)
-                {
+                    lbl_result1_1.Text = "Fehler. Kein Notdienst registriert.";
+                    lbl_result1_2.Text = "";
+                    lbl_result2_1.Text = "Fehler. Kein Notdienst registriert.";
                     lbl_result2_2.Text = "";
                 }
                 else
                 {
-                    string[] delimiters11 = new string[] { "(", ")" };
-                    string[] dataSet11 = dataOfSecond2.Split(delimiters11, StringSplitOptions.RemoveEmptyEntries);
 
-                    string[] delimiters12 = new string[] { "-", "–" };
-                    string[] dataSet12 = dataSet11[1].Split(delimiters12, StringSplitOptions.RemoveEmptyEntries);
 
-                    dataOfSecond2 = dataSet11[0] + "\n";
+
+                    // Datensatz der dritten und vierten Spalte extrahieren
+
+
+
+                    string[] delimiters2 = new string[] { "<TD ALIGN=LEFT VALIGN=TOP><FONT SIZE=1 COLOR=\"#00CC00\">", "<TD ALIGN=LEFT VALIGN=TOP><FONT SIZE=1 COLOR=\"#FF0000\">", "</FONT></TD>" };
+
+                    string dataOfFirst = string.Empty;
+                    string dataOfFirst2 = string.Empty;
+                    string dataOfSecond = string.Empty;
+                    string dataOfSecond2 = string.Empty;
+
+                    string[] dataSet2 = dataOfDay.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
+
+                    int dayRow = 1;
+                    foreach (string s in dataSet2)
+                    {
+                        if (dayRow == 4)
+                        {
+
+                            if (s.Contains("<BR>"))
+                            {
+                                string[] delimiters3 = new string[] { "und<BR>", "<BR>und" };
+
+                                string[] dataSet3 = s.Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
+
+                                dataOfFirst = dataSet3[0].Trim();
+
+                                dataOfFirst2 = dataSet3[1].Trim();
+                            }
+                            else
+                            {
+                                dataOfFirst = s;
+                            }
+
+                        }
+                        else if (dayRow == 6)
+                        {
+                            if (s.Contains("<BR>"))
+                            {
+                                string[] delimiters4 = new string[] { "und<BR>", "<BR>und" };
+
+                                string[] dataSet4 = s.Split(delimiters4, StringSplitOptions.RemoveEmptyEntries);
+
+                                dataOfSecond = dataSet4[0].Trim();
+
+                                dataOfSecond2 = dataSet4[1].Trim();
+                            }
+                            else
+                            {
+                                dataOfSecond = s;
+                            }
+                        }
+
+                        dayRow++;
+                    }
+
+                    string[] delimiters5 = new string[] { "(", ")" };
+                    string[] dataSet5 = dataOfFirst.Split(delimiters5, StringSplitOptions.RemoveEmptyEntries);
+
+                    string[] delimiters6 = new string[] { "-", "–" };
+                    string[] dataSet6 = dataSet5[1].Split(delimiters6, StringSplitOptions.RemoveEmptyEntries);
+
+                    dataOfFirst = dataSet5[0] + "\n";
+
+                    foreach (string s in dataSet6)
+                    {
+                        dataOfFirst += "\n" + s.Trim();
+                    }
+
+                    lbl_result1_1.Text = decodeHtml(dataOfFirst);
+                    if (dataOfFirst2 == String.Empty)
+                    {
+                        lbl_result1_2.Text = "";
+                    }
+                    else
+                    {
+                        string[] delimiters7 = new string[] { "(", ")" };
+                        string[] dataSet7 = dataOfFirst2.Split(delimiters7, StringSplitOptions.RemoveEmptyEntries);
+
+                        string[] delimiters8 = new string[] { "-", "–" };
+                        string[] dataSet8 = dataSet7[1].Split(delimiters8, StringSplitOptions.RemoveEmptyEntries);
+
+                        dataOfFirst2 = dataSet7[0] + "\n";
+
+                        foreach (string s in dataSet8)
+                        {
+                            dataOfFirst2 += "\n" + s.Trim();
+                        }
+
+                        lbl_result1_2.Text = decodeHtml(dataOfFirst2);
+                    }
+
+                    string[] delimiters9 = new string[] { "(", ")" };
+                    string[] dataSet9 = dataOfSecond.Split(delimiters9, StringSplitOptions.RemoveEmptyEntries);
+
+                    string[] delimiters10 = new string[] { "-", "–" };
+                    string[] dataSet10 = dataSet9[1].Split(delimiters10, StringSplitOptions.RemoveEmptyEntries);
+
+                    dataOfSecond = dataSet9[0] + "\n";
 
                     foreach (string s in dataSet10)
                     {
-                        dataOfSecond2 += "\n" + s.Trim();
+                        dataOfSecond += "\n" + s.Trim();
                     }
 
-                    lbl_result2_2.Text = decodeHtml(dataOfSecond2);
+                    lbl_result2_1.Text = decodeHtml(dataOfSecond);
+                    if (dataOfSecond2 == String.Empty)
+                    {
+                        lbl_result2_2.Text = "";
+                    }
+                    else
+                    {
+                        string[] delimiters11 = new string[] { "(", ")" };
+                        string[] dataSet11 = dataOfSecond2.Split(delimiters11, StringSplitOptions.RemoveEmptyEntries);
+
+                        string[] delimiters12 = new string[] { "-", "–" };
+                        string[] dataSet12 = dataSet11[1].Split(delimiters12, StringSplitOptions.RemoveEmptyEntries);
+
+                        dataOfSecond2 = dataSet11[0] + "\n";
+
+                        foreach (string s in dataSet10)
+                        {
+                            dataOfSecond2 += "\n" + s.Trim();
+                        }
+
+                        lbl_result2_2.Text = decodeHtml(dataOfSecond2);
+                    }
                 }
+
+                // Kein Netzwerkfehler aufgetreten
+                lbl_neterror.Visible = false;
+            } catch (WebException)
+            {
+                // Netzwerkfehler beim Abrufen der Daten. Information anzeigen.
+                lbl_neterror.Visible = true;
             }
+            
         }
 
         private void btn_get_Click(object sender, EventArgs e)
