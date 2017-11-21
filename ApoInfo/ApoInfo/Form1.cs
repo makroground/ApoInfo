@@ -19,6 +19,7 @@ namespace ApoInfo
         private Boolean isCursorHidden;
 
         private String dateOfToday;
+        private String[] lastResults = { "-\n-\n-\n-\n-", "-\n-\n-\n-\n-", "-\n-\n-\n-\n-", "-\n-\n-\n-\n-" };
 
         // Ergebnis von 0 bis 9 Uhr weiterhin gültig
         private static int noRefreshTimeStart = 0;
@@ -41,10 +42,10 @@ namespace ApoInfo
             this.WindowState = FormWindowState.Maximized;
             //this.TopMost = true;
 
-            lbl_result1_1.Text = "-\n-\n-\n-\n-";
-            lbl_result1_2.Text = "-\n-\n-\n-\n-";
-            lbl_result2_1.Text = "-\n-\n-\n-\n-";
-            lbl_result2_2.Text = "-\n-\n-\n-\n-";
+            lbl_result1_1.Text = lastResults[0];
+            lbl_result1_2.Text = lastResults[1];
+            lbl_result2_1.Text = lastResults[2];
+            lbl_result2_2.Text = lastResults[3];
 
             setSkaling();
 
@@ -218,11 +219,6 @@ namespace ApoInfo
                     dateOfToday = DateTime.Now.ToString("dd.MM.yy");
                 }
 
-                lbl_result1_1.Text = "-\n-\n-\n-\n-";
-                lbl_result1_2.Text = "-\n-\n-\n-\n-";
-                lbl_result2_1.Text = "-\n-\n-\n-\n-";
-                lbl_result2_2.Text = "-\n-\n-\n-\n-";
-
                 string result = string.Empty;
                 string url = @"http://oldenburger-apotheken.de/notdienst";
 
@@ -333,7 +329,7 @@ namespace ApoInfo
                     string[] delimiters5 = new string[] { "(", ")" };
                     string[] dataSet5 = dataOfFirst.Split(delimiters5, StringSplitOptions.RemoveEmptyEntries);
 
-                    string[] delimiters6 = new string[] { "-", "–" };
+                    string[] delimiters6 = new string[] { " - ", " – " };
                     string[] dataSet6 = dataSet5[1].Split(delimiters6, StringSplitOptions.RemoveEmptyEntries);
 
                     dataOfFirst = dataSet5[0] + "\n";
@@ -353,7 +349,7 @@ namespace ApoInfo
                         string[] delimiters7 = new string[] { "(", ")" };
                         string[] dataSet7 = dataOfFirst2.Split(delimiters7, StringSplitOptions.RemoveEmptyEntries);
 
-                        string[] delimiters8 = new string[] { "-", "–" };
+                        string[] delimiters8 = new string[] { " - ", " – " };
                         string[] dataSet8 = dataSet7[1].Split(delimiters8, StringSplitOptions.RemoveEmptyEntries);
 
                         dataOfFirst2 = dataSet7[0] + "\n";
@@ -369,7 +365,7 @@ namespace ApoInfo
                     string[] delimiters9 = new string[] { "(", ")" };
                     string[] dataSet9 = dataOfSecond.Split(delimiters9, StringSplitOptions.RemoveEmptyEntries);
 
-                    string[] delimiters10 = new string[] { "-", "–" };
+                    string[] delimiters10 = new string[] { " - ", " – " };
                     string[] dataSet10 = dataSet9[1].Split(delimiters10, StringSplitOptions.RemoveEmptyEntries);
 
                     dataOfSecond = dataSet9[0] + "\n";
@@ -389,7 +385,7 @@ namespace ApoInfo
                         string[] delimiters11 = new string[] { "(", ")" };
                         string[] dataSet11 = dataOfSecond2.Split(delimiters11, StringSplitOptions.RemoveEmptyEntries);
 
-                        string[] delimiters12 = new string[] { "-", "–" };
+                        string[] delimiters12 = new string[] { " - ", " – " };
                         string[] dataSet12 = dataSet11[1].Split(delimiters12, StringSplitOptions.RemoveEmptyEntries);
 
                         dataOfSecond2 = dataSet11[0] + "\n";
@@ -401,6 +397,12 @@ namespace ApoInfo
 
                         lbl_result2_2.Text = decodeHtml(dataOfSecond2);
                     }
+
+                    // Letzte Ergebnisse speichern, falls z.B. Netzwerkprobleme auftreten.
+                    lastResults[0] = lbl_result1_1.Text;
+                    lastResults[1] = lbl_result1_2.Text;
+                    lastResults[2] = lbl_result2_1.Text;
+                    lastResults[3] = lbl_result2_2.Text;
                 }
 
                 // Kein Netzwerkfehler aufgetreten
@@ -409,6 +411,12 @@ namespace ApoInfo
             {
                 // Netzwerkfehler beim Abrufen der Daten. Information anzeigen.
                 lbl_neterror.Visible = true;
+
+                // Ergebnisse der letzten erfolgreichen Datensammlung anzeigen
+                lbl_result1_1.Text = lastResults[0];
+                lbl_result1_2.Text = lastResults[1];
+                lbl_result2_1.Text = lastResults[2];
+                lbl_result2_2.Text = lastResults[3];
             }
             
         }
@@ -476,6 +484,12 @@ namespace ApoInfo
             {
                 getDataFromWebsite();
             }
+        }
+
+        private void tmr_updateDateTime_Tick(object sender, EventArgs e)
+        {
+            // Zeit in der Kopfzeile aktualisieren
+            lbl_date.Text = "Oldenburg, den " + DateTime.Now.ToString("dd.MM.yyyy, H:mm") + " Uhr";
         }
     }
 }

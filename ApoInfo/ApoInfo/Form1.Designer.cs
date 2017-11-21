@@ -52,6 +52,7 @@
             this.pbx_appqr = new System.Windows.Forms.PictureBox();
             this.tmr_updateOnce = new System.Windows.Forms.Timer(this.components);
             this.lbl_neterror = new System.Windows.Forms.Label();
+            this.tmr_updateDateTime = new System.Windows.Forms.Timer(this.components);
             this.pnl_first1.SuspendLayout();
             this.pnl_second1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbx_apota)).BeginInit();
@@ -288,6 +289,12 @@
             this.lbl_neterror.UseMnemonic = false;
             this.lbl_neterror.Visible = false;
             // 
+            // tmr_updateDateTime
+            // 
+            this.tmr_updateDateTime.Enabled = true;
+            this.tmr_updateDateTime.Interval = 60000;
+            this.tmr_updateDateTime.Tick += new System.EventHandler(this.tmr_updateDateTime_Tick);
+            // 
             // frm_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -355,6 +362,7 @@
         private System.Windows.Forms.PictureBox pbx_appqr;
         private System.Windows.Forms.Timer tmr_updateOnce;
         private System.Windows.Forms.Label lbl_neterror;
+        private System.Windows.Forms.Timer tmr_updateDateTime;
     }
 }
 
