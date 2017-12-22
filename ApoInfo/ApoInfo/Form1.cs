@@ -238,7 +238,7 @@ namespace ApoInfo
 
 
 
-                string[] delimiters1 = new string[] { "<TR>", "</TR>" };
+                string[] delimiters1 = new string[] { "<tr>", "</tr>" };
                 string[] dataSet1;
                 string dataOfDay = string.Empty;
 
@@ -274,7 +274,7 @@ namespace ApoInfo
 
 
 
-                    string[] delimiters2 = new string[] { "<TD ALIGN=LEFT VALIGN=TOP><FONT SIZE=1 COLOR=\"#00CC00\">", "<TD ALIGN=LEFT VALIGN=TOP><FONT SIZE=1 COLOR=\"#FF0000\">", "</FONT></TD>" };
+                    string[] delimiters2 = new string[] { "<td", "</td>", "\">", "</font>", "\n", "\t" };
 
                     string dataOfFirst = string.Empty;
                     string dataOfFirst2 = string.Empty;
@@ -286,12 +286,12 @@ namespace ApoInfo
                     int dayRow = 1;
                     foreach (string s in dataSet2)
                     {
-                        if (dayRow == 4)
+                        if (dayRow == 6)
                         {
 
-                            if (s.Contains("<BR>"))
+                            if (s.Contains("<br>"))
                             {
-                                string[] delimiters3 = new string[] { "und<BR>", "<BR>und" };
+                                string[] delimiters3 = new string[] { "und<br>", "<br>und" };
 
                                 string[] dataSet3 = s.Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
 
@@ -305,11 +305,11 @@ namespace ApoInfo
                             }
 
                         }
-                        else if (dayRow == 6)
+                        else if (dayRow == 8)
                         {
-                            if (s.Contains("<BR>"))
+                            if (s.Contains("<br>"))
                             {
-                                string[] delimiters4 = new string[] { "und<BR>", "<BR>und" };
+                                string[] delimiters4 = new string[] { "und<br>", "<br>und" };
 
                                 string[] dataSet4 = s.Split(delimiters4, StringSplitOptions.RemoveEmptyEntries);
 
