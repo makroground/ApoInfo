@@ -291,7 +291,7 @@ namespace ApoInfo
 
                             if (s.Contains("<br>"))
                             {
-                                string[] delimiters3 = new string[] { "und<br>", "<br>und" };
+                                string[] delimiters3 = new string[] { "<br>", " und" };
 
                                 string[] dataSet3 = s.Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
 
@@ -309,7 +309,7 @@ namespace ApoInfo
                         {
                             if (s.Contains("<br>"))
                             {
-                                string[] delimiters4 = new string[] { "und<br>", "<br>und" };
+                                string[] delimiters4 = new string[] { "<br>", " und" };
 
                                 string[] dataSet4 = s.Split(delimiters4, StringSplitOptions.RemoveEmptyEntries);
 
@@ -390,7 +390,7 @@ namespace ApoInfo
 
                         dataOfSecond2 = dataSet11[0] + "\n";
 
-                        foreach (string s in dataSet10)
+                        foreach (string s in dataSet12)
                         {
                             dataOfSecond2 += "\n" + s.Trim();
                         }
