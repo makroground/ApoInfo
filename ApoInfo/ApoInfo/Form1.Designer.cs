@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_main));
             this.lbl_result1_1 = new System.Windows.Forms.Label();
-            this.btn_get = new System.Windows.Forms.Button();
             this.lbl_result2_1 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -67,35 +66,21 @@
             // 
             this.lbl_result1_1.AutoSize = true;
             this.lbl_result1_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.lbl_result1_1.Location = new System.Drawing.Point(143, 10);
+            this.lbl_result1_1.Location = new System.Drawing.Point(262, 18);
+            this.lbl_result1_1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbl_result1_1.Name = "lbl_result1_1";
-            this.lbl_result1_1.Size = new System.Drawing.Size(72, 37);
+            this.lbl_result1_1.Size = new System.Drawing.Size(72, 38);
             this.lbl_result1_1.TabIndex = 0;
             this.lbl_result1_1.Text = "N/A";
-            // 
-            // btn_get
-            // 
-            this.btn_get.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_get.FlatAppearance.BorderSize = 2;
-            this.btn_get.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_get.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.btn_get.ForeColor = System.Drawing.Color.Black;
-            this.btn_get.Location = new System.Drawing.Point(521, -1);
-            this.btn_get.Name = "btn_get";
-            this.btn_get.Size = new System.Drawing.Size(115, 28);
-            this.btn_get.TabIndex = 1;
-            this.btn_get.Text = "Aktualisieren";
-            this.btn_get.UseVisualStyleBackColor = true;
-            this.btn_get.Visible = false;
-            this.btn_get.Click += new System.EventHandler(this.btn_get_Click);
             // 
             // lbl_result2_1
             // 
             this.lbl_result2_1.AutoSize = true;
             this.lbl_result2_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.lbl_result2_1.Location = new System.Drawing.Point(144, 16);
+            this.lbl_result2_1.Location = new System.Drawing.Point(264, 30);
+            this.lbl_result2_1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbl_result2_1.Name = "lbl_result2_1";
-            this.lbl_result2_1.Size = new System.Drawing.Size(72, 37);
+            this.lbl_result2_1.Size = new System.Drawing.Size(72, 38);
             this.lbl_result2_1.TabIndex = 2;
             this.lbl_result2_1.Text = "N/A";
             // 
@@ -104,9 +89,10 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(23, 20);
+            this.label1.Location = new System.Drawing.Point(42, 37);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1246, 91);
+            this.label1.Size = new System.Drawing.Size(2170, 159);
             this.label1.TabIndex = 3;
             this.label1.Text = "9 - 9 Uhr (Durchgehend, 24 Std.):";
             // 
@@ -115,9 +101,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label2.Location = new System.Drawing.Point(23, 21);
+            this.label2.Location = new System.Drawing.Point(42, 39);
+            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(966, 91);
+            this.label2.Size = new System.Drawing.Size(1682, 159);
             this.label2.TabIndex = 4;
             this.label2.Text = "9 - 22 Uhr (Gleicher Tag):";
             // 
@@ -125,9 +112,10 @@
             // 
             this.lbl_result1_2.AutoSize = true;
             this.lbl_result1_2.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.lbl_result1_2.Location = new System.Drawing.Point(152, 11);
+            this.lbl_result1_2.Location = new System.Drawing.Point(279, 20);
+            this.lbl_result1_2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbl_result1_2.Name = "lbl_result1_2";
-            this.lbl_result1_2.Size = new System.Drawing.Size(72, 37);
+            this.lbl_result1_2.Size = new System.Drawing.Size(72, 38);
             this.lbl_result1_2.TabIndex = 5;
             this.lbl_result1_2.Text = "N/A";
             // 
@@ -135,9 +123,10 @@
             // 
             this.lbl_result2_2.AutoSize = true;
             this.lbl_result2_2.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.lbl_result2_2.Location = new System.Drawing.Point(153, 16);
+            this.lbl_result2_2.Location = new System.Drawing.Point(281, 30);
+            this.lbl_result2_2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbl_result2_2.Name = "lbl_result2_2";
-            this.lbl_result2_2.Size = new System.Drawing.Size(72, 37);
+            this.lbl_result2_2.Size = new System.Drawing.Size(72, 38);
             this.lbl_result2_2.TabIndex = 6;
             this.lbl_result2_2.Text = "N/A";
             // 
@@ -146,9 +135,10 @@
             this.lbl_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_date.AutoSize = true;
             this.lbl_date.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.lbl_date.Location = new System.Drawing.Point(1479, 21);
+            this.lbl_date.Location = new System.Drawing.Point(2712, 39);
+            this.lbl_date.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbl_date.Name = "lbl_date";
-            this.lbl_date.Size = new System.Drawing.Size(170, 15);
+            this.lbl_date.Size = new System.Drawing.Size(184, 16);
             this.lbl_date.TabIndex = 7;
             this.lbl_date.Text = "Oldenburg, den dd.MM.yy";
             this.lbl_date.UseMnemonic = false;
@@ -165,9 +155,10 @@
             this.pnl_first1.BackColor = System.Drawing.Color.Red;
             this.pnl_first1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_first1.Controls.Add(this.label1);
-            this.pnl_first1.Location = new System.Drawing.Point(57, 91);
+            this.pnl_first1.Location = new System.Drawing.Point(105, 168);
+            this.pnl_first1.Margin = new System.Windows.Forms.Padding(6);
             this.pnl_first1.Name = "pnl_first1";
-            this.pnl_first1.Size = new System.Drawing.Size(1259, 123);
+            this.pnl_first1.Size = new System.Drawing.Size(2307, 225);
             this.pnl_first1.TabIndex = 8;
             // 
             // pnl_second1
@@ -175,17 +166,19 @@
             this.pnl_second1.BackColor = System.Drawing.Color.Red;
             this.pnl_second1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_second1.Controls.Add(this.label2);
-            this.pnl_second1.Location = new System.Drawing.Point(57, 389);
+            this.pnl_second1.Location = new System.Drawing.Point(105, 718);
+            this.pnl_second1.Margin = new System.Windows.Forms.Padding(6);
             this.pnl_second1.Name = "pnl_second1";
-            this.pnl_second1.Size = new System.Drawing.Size(1259, 126);
+            this.pnl_second1.Size = new System.Drawing.Size(2307, 231);
             this.pnl_second1.TabIndex = 9;
             // 
             // pbx_apota
             // 
             this.pbx_apota.Image = ((System.Drawing.Image)(resources.GetObject("pbx_apota.Image")));
-            this.pbx_apota.Location = new System.Drawing.Point(26, 12);
+            this.pbx_apota.Location = new System.Drawing.Point(48, 22);
+            this.pbx_apota.Margin = new System.Windows.Forms.Padding(6);
             this.pbx_apota.Name = "pbx_apota";
-            this.pbx_apota.Size = new System.Drawing.Size(163, 129);
+            this.pbx_apota.Size = new System.Drawing.Size(299, 238);
             this.pbx_apota.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbx_apota.TabIndex = 10;
             this.pbx_apota.TabStop = false;
@@ -194,9 +187,10 @@
             // 
             this.lbl_title.AutoSize = true;
             this.lbl_title.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.lbl_title.Location = new System.Drawing.Point(172, 29);
+            this.lbl_title.Location = new System.Drawing.Point(315, 54);
+            this.lbl_title.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbl_title.Name = "lbl_title";
-            this.lbl_title.Size = new System.Drawing.Size(451, 82);
+            this.lbl_title.Size = new System.Drawing.Size(459, 83);
             this.lbl_title.TabIndex = 6;
             this.lbl_title.Text = "NOTDIENST";
             // 
@@ -205,9 +199,10 @@
             this.pnl_result1_1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnl_result1_1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_result1_1.Controls.Add(this.lbl_result1_1);
-            this.pnl_result1_1.Location = new System.Drawing.Point(57, 220);
+            this.pnl_result1_1.Location = new System.Drawing.Point(105, 406);
+            this.pnl_result1_1.Margin = new System.Windows.Forms.Padding(6);
             this.pnl_result1_1.Name = "pnl_result1_1";
-            this.pnl_result1_1.Size = new System.Drawing.Size(635, 163);
+            this.pnl_result1_1.Size = new System.Drawing.Size(1163, 299);
             this.pnl_result1_1.TabIndex = 11;
             // 
             // pnl_result1_2
@@ -215,9 +210,10 @@
             this.pnl_result1_2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnl_result1_2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_result1_2.Controls.Add(this.lbl_result1_2);
-            this.pnl_result1_2.Location = new System.Drawing.Point(698, 220);
+            this.pnl_result1_2.Location = new System.Drawing.Point(1280, 406);
+            this.pnl_result1_2.Margin = new System.Windows.Forms.Padding(6);
             this.pnl_result1_2.Name = "pnl_result1_2";
-            this.pnl_result1_2.Size = new System.Drawing.Size(618, 163);
+            this.pnl_result1_2.Size = new System.Drawing.Size(1131, 299);
             this.pnl_result1_2.TabIndex = 12;
             // 
             // pnl_result2_1
@@ -225,9 +221,10 @@
             this.pnl_result2_1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnl_result2_1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_result2_1.Controls.Add(this.lbl_result2_1);
-            this.pnl_result2_1.Location = new System.Drawing.Point(57, 521);
+            this.pnl_result2_1.Location = new System.Drawing.Point(105, 962);
+            this.pnl_result2_1.Margin = new System.Windows.Forms.Padding(6);
             this.pnl_result2_1.Name = "pnl_result2_1";
-            this.pnl_result2_1.Size = new System.Drawing.Size(635, 163);
+            this.pnl_result2_1.Size = new System.Drawing.Size(1163, 299);
             this.pnl_result2_1.TabIndex = 13;
             // 
             // pnl_result2_2
@@ -235,9 +232,10 @@
             this.pnl_result2_2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnl_result2_2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnl_result2_2.Controls.Add(this.lbl_result2_2);
-            this.pnl_result2_2.Location = new System.Drawing.Point(698, 521);
+            this.pnl_result2_2.Location = new System.Drawing.Point(1280, 962);
+            this.pnl_result2_2.Margin = new System.Windows.Forms.Padding(6);
             this.pnl_result2_2.Name = "pnl_result2_2";
-            this.pnl_result2_2.Size = new System.Drawing.Size(618, 163);
+            this.pnl_result2_2.Size = new System.Drawing.Size(1131, 299);
             this.pnl_result2_2.TabIndex = 14;
             // 
             // trm_updateData
@@ -251,9 +249,10 @@
             this.lbl_info.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_info.AutoSize = true;
             this.lbl_info.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_info.Location = new System.Drawing.Point(142, 698);
+            this.lbl_info.Location = new System.Drawing.Point(260, 1289);
+            this.lbl_info.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbl_info.Name = "lbl_info";
-            this.lbl_info.Size = new System.Drawing.Size(1204, 20);
+            this.lbl_info.Size = new System.Drawing.Size(2030, 32);
             this.lbl_info.TabIndex = 15;
             this.lbl_info.Text = "Es informiert Sie Ihre Apotheke Donnerschwee. Unsere Öffnungszeiten: Mo. bis Fr. " +
     "8:30 - 20:00 Uhr und Sa. 9:00 bis 13:00 Uhr. Telefon: 0441 31727";
@@ -262,9 +261,10 @@
             // pbx_appqr
             // 
             this.pbx_appqr.Image = ((System.Drawing.Image)(resources.GetObject("pbx_appqr.Image")));
-            this.pbx_appqr.Location = new System.Drawing.Point(898, 7);
+            this.pbx_appqr.Location = new System.Drawing.Point(1646, 13);
+            this.pbx_appqr.Margin = new System.Windows.Forms.Padding(6);
             this.pbx_appqr.Name = "pbx_appqr";
-            this.pbx_appqr.Size = new System.Drawing.Size(352, 129);
+            this.pbx_appqr.Size = new System.Drawing.Size(645, 238);
             this.pbx_appqr.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbx_appqr.TabIndex = 16;
             this.pbx_appqr.TabStop = false;
@@ -280,14 +280,14 @@
             this.lbl_neterror.AutoSize = true;
             this.lbl_neterror.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_neterror.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.lbl_neterror.Location = new System.Drawing.Point(203, 118);
+            this.lbl_neterror.Location = new System.Drawing.Point(372, 218);
+            this.lbl_neterror.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbl_neterror.Name = "lbl_neterror";
-            this.lbl_neterror.Size = new System.Drawing.Size(909, 20);
+            this.lbl_neterror.Size = new System.Drawing.Size(1438, 32);
             this.lbl_neterror.TabIndex = 17;
-            this.lbl_neterror.Text = "Hinweiß: Die Aktuallität der Daten ist temporär nicht garantiert! Für aktuelle In" +
-    "fos bitte \'Meine Apotheke\' nutzen.";
+            this.lbl_neterror.Text = "Hinweis: Kurzfristige Änderungen sind nicht auszuschließen. Keine Gewähr für die " +
+    "Aktuallität der Inhalte.";
             this.lbl_neterror.UseMnemonic = false;
-            this.lbl_neterror.Visible = false;
             // 
             // tmr_updateDateTime
             // 
@@ -297,10 +297,10 @@
             // 
             // frm_main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1366, 729);
+            this.ClientSize = new System.Drawing.Size(2504, 1346);
             this.Controls.Add(this.lbl_neterror);
             this.Controls.Add(this.pbx_appqr);
             this.Controls.Add(this.lbl_info);
@@ -313,8 +313,8 @@
             this.Controls.Add(this.pnl_second1);
             this.Controls.Add(this.pnl_first1);
             this.Controls.Add(this.lbl_date);
-            this.Controls.Add(this.btn_get);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "frm_main";
             this.Text = "Oldenburger-Apotheken.de/Notdienst";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -341,7 +341,6 @@
         #endregion
 
         private System.Windows.Forms.Label lbl_result1_1;
-        private System.Windows.Forms.Button btn_get;
         private System.Windows.Forms.Label lbl_result2_1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

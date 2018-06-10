@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace ApoInfo
 {
@@ -20,6 +21,7 @@ namespace ApoInfo
 
         private String dateOfToday;
         private String[] lastResults = { "-\n-\n-\n-\n-", "-\n-\n-\n-\n-", "-\n-\n-\n-\n-", "-\n-\n-\n-\n-" };
+        private Tag aktuellerTagessatz;
 
         // Ergebnis von 0 bis 9 Uhr weiterhin gültig
         private static int noRefreshTimeStart = 0;
@@ -49,7 +51,7 @@ namespace ApoInfo
 
             setSkaling();
 
-            getDataFromWebsite();
+            getDataFromLocalFile();
         }
 
         private void setSkaling()
@@ -202,61 +204,69 @@ namespace ApoInfo
             pnl.Left = this.Width / 100 * percentPaddingLeft;
         }
 
-        private void getDataFromWebsite()
+        private void getDataFromLocalFile()
         {
+            // Frisch aus Excel exportierte XML mit einfacher Hirachie (kompatitibilitaet) erweitern
             try
             {
+                var fileName = Directory.GetCurrentDirectory() + "\\Notdienstdatenbank.xml";
+                var txtLines = File.ReadAllLines(fileName).ToList();
+
+                if (!txtLines.Contains("<Tage>"))
+                {
+                    var upperTag = "\t<Tag>";
+                    var upperTagToAdd = "<Tage>";
+
+                    var lowerTag = "\t</Tag>";
+                    var lowerTagToAdd = "</Tage>";
+
+
+                    txtLines.Insert(txtLines.IndexOf(upperTag), upperTagToAdd);
+                    txtLines.Insert(txtLines.LastIndexOf(lowerTag) + 1, lowerTagToAdd);
+                    File.WriteAllLines(fileName, txtLines);
+                }
+
+                // Deserialize
+                // Abbilden der XML in neue Instanz der Klasse Notdienstliste
+                Notdienstliste notdienstListe = new Notdienstliste();
+                XmlSerializer xmlS = new XmlSerializer(typeof(Notdienstliste));
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    using (StreamWriter writer = new StreamWriter(stream))
+                    {
+                        writer.Write(File.ReadAllText(Directory.GetCurrentDirectory() + "\\Notdienstdatenbank.xml"));
+                        writer.Flush();
+                        stream.Position = 0;
+                        notdienstListe = xmlS.Deserialize(stream) as Notdienstliste;
+                    }
+                }
+
+                // Durchsuchen der Datensaetze nach tagesaktuellen Informationen zur Weiterverarbeitung
                 if (DateTime.Now.Hour >= noRefreshTimeStart && DateTime.Now.Hour < noRefreshTimeEnd)
                 {
                     // Datum vom Vortag waehlen
                     // d.h. 12 Stunden zurueck
                     TimeSpan refreshDelay = TimeSpan.FromHours(12);
                     DateTime previousDate = DateTime.Now - refreshDelay;
-                    dateOfToday = previousDate.ToString("dd.MM.yy");
+                    dateOfToday = previousDate.ToString("yyyy") + "-" + previousDate.ToString("MM") + "-" + previousDate.ToString("dd");
+                    //nowTime.Replace(".", "-");
                 }
                 else
                 {
-                    dateOfToday = DateTime.Now.ToString("dd.MM.yy");
+                    dateOfToday = DateTime.Now.ToString("yyyy") + "-" + DateTime.Now.ToString("MM") + "-" + DateTime.Now.ToString("dd");
+                    //nowTime.Replace(".", "-");
                 }
-
-                string result = string.Empty;
-                string url = @"http://oldenburger-apotheken.de/notdienst";
-
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.AutomaticDecompression = DecompressionMethods.GZip;
-
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (Stream stream = response.GetResponseStream())
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    result = reader.ReadToEnd();
-                }
-
-
-
-                // Datensatz fuer den heutigen Tag extrahieren
-
-
-
-                string[] delimiters1 = new string[] { "<tr>", "</tr>" };
-                string[] dataSet1;
-                string dataOfDay = string.Empty;
-
-                dataSet1 = result.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
 
                 Boolean resultDayFound = false;
-                foreach (string s in dataSet1)
+                foreach (Tag tag in notdienstListe.Tage)
                 {
-                    if (s.Contains(dateOfToday))
+                    if (tag.Datum.Equals(dateOfToday))
                     {
-                        dataOfDay = s;
-
+                        aktuellerTagessatz = tag;
                         resultDayFound = true;
                     }
                 }
-
-
-
 
                 if (!resultDayFound)
                 {
@@ -268,167 +278,126 @@ namespace ApoInfo
                 else
                 {
 
-
-
-                    // Datensatz der dritten und vierten Spalte extrahieren
-
-
-
-                    string[] delimiters2 = new string[] { "<td", "</td>", "\">", "</font>", "\n", "\t" };
-
                     string dataOfFirst = string.Empty;
                     string dataOfFirst2 = string.Empty;
                     string dataOfSecond = string.Empty;
                     string dataOfSecond2 = string.Empty;
 
-                    string[] dataSet2 = dataOfDay.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
+                    string[] delimiters1 = new string[] { " und " };
+                    string[] delimiters2 = new string[] { "(", ")" };
+                    string[] delimiters3 = new string[] { " - ", " – " };
 
-                    int dayRow = 1;
-                    foreach (string s in dataSet2)
+                    // Bei Benennung mehrerer Apotheken pro Schicht den Schichtsatz aufteilen
+                    // --------------------------------------------------------------------------------------------------------
+                    // Betrifft die Schicht 9 - 9 Uhr
+                    if (aktuellerTagessatz.ganzerTag_eins.Contains(" und "))
                     {
-                        if (dayRow == 6)
-                        {
+                        string[] dataSet1_1 = aktuellerTagessatz.ganzerTag_eins.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
 
-                            if (s.Contains("<br>"))
-                            {
-                                string[] delimiters3 = new string[] { "<br>", " und" };
+                        dataOfFirst = dataSet1_1[0].Trim();
 
-                                string[] dataSet3 = s.Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
-
-                                dataOfFirst = dataSet3[0].Trim();
-
-                                dataOfFirst2 = dataSet3[1].Trim();
-                            }
-                            else
-                            {
-                                dataOfFirst = s;
-                            }
-
-                        }
-                        else if (dayRow == 8)
-                        {
-                            if (s.Contains("<br>"))
-                            {
-                                string[] delimiters4 = new string[] { "<br>", " und" };
-
-                                string[] dataSet4 = s.Split(delimiters4, StringSplitOptions.RemoveEmptyEntries);
-
-                                dataOfSecond = dataSet4[0].Trim();
-
-                                dataOfSecond2 = dataSet4[1].Trim();
-                            }
-                            else
-                            {
-                                dataOfSecond = s;
-                            }
-                        }
-
-                        dayRow++;
+                        dataOfFirst2 = dataSet1_1[1].Trim();
+                    }
+                    else
+                    {
+                        dataOfFirst = aktuellerTagessatz.ganzerTag_eins;
                     }
 
-                    string[] delimiters5 = new string[] { "(", ")" };
-                    string[] dataSet5 = dataOfFirst.Split(delimiters5, StringSplitOptions.RemoveEmptyEntries);
+                    // --------------------------------------------------------------------------------------------------------
+                    // Betrifft die Schicht 9 - 22 Uhr
+                    if (aktuellerTagessatz.halberTag_eins.Contains(" und "))
+                    {
 
-                    string[] delimiters6 = new string[] { " - ", " – " };
-                    string[] dataSet6 = dataSet5[1].Split(delimiters6, StringSplitOptions.RemoveEmptyEntries);
+                        string[] dataSet1_2 = aktuellerTagessatz.halberTag_eins.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
 
-                    dataOfFirst = dataSet5[0] + "\n";
+                        dataOfSecond = dataSet1_2[0].Trim();
 
-                    foreach (string s in dataSet6)
+                        dataOfSecond2 = dataSet1_2[1].Trim();
+                    }
+                    else
+                    {
+                        dataOfSecond = aktuellerTagessatz.halberTag_eins;
+                    }
+
+                    // Name der Apotheke von den Zusatzinformationen trennen und fuer spaetere Darstellung konfektionieren
+                    // Schicht 9 - 9 Uhr
+                    // --------------------------------------------------------------------------------------------------------
+                    // Erste Apotheke
+                    string[] dataSet2_11 = dataOfFirst.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
+                    string[] dataSet2_12 = dataSet2_11[1].Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
+
+                    dataOfFirst = dataSet2_11[0] + "\n";
+
+                    foreach (string s in dataSet2_12)
                     {
                         dataOfFirst += "\n" + s.Trim();
                     }
+                    lbl_result1_1.Text = dataOfFirst;
 
-                    lbl_result1_1.Text = decodeHtml(dataOfFirst);
+                    // --------------------------------------------------------------------------------------------------------
+                    // Zweite Apotheke (bedingt optional)
                     if (dataOfFirst2 == String.Empty)
                     {
                         lbl_result1_2.Text = "";
                     }
                     else
                     {
-                        string[] delimiters7 = new string[] { "(", ")" };
-                        string[] dataSet7 = dataOfFirst2.Split(delimiters7, StringSplitOptions.RemoveEmptyEntries);
+                        string[] dataSet2_21 = dataOfFirst2.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
+                        string[] dataSet2_22 = dataSet2_21[1].Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
 
-                        string[] delimiters8 = new string[] { " - ", " – " };
-                        string[] dataSet8 = dataSet7[1].Split(delimiters8, StringSplitOptions.RemoveEmptyEntries);
+                        dataOfFirst2 = dataSet2_21[0] + "\n";
 
-                        dataOfFirst2 = dataSet7[0] + "\n";
-
-                        foreach (string s in dataSet8)
+                        foreach (string s in dataSet2_22)
                         {
                             dataOfFirst2 += "\n" + s.Trim();
                         }
-
-                        lbl_result1_2.Text = decodeHtml(dataOfFirst2);
+                        lbl_result1_2.Text = dataOfFirst2;
                     }
 
-                    string[] delimiters9 = new string[] { "(", ")" };
-                    string[] dataSet9 = dataOfSecond.Split(delimiters9, StringSplitOptions.RemoveEmptyEntries);
+                    // Name der Apotheke von den Zusatzinformationen trennen und fuer spaetere Darstellung konfektionieren
+                    // Schicht 9 - 22 Uhr
+                    // --------------------------------------------------------------------------------------------------------
+                    // Erste Apotheke
+                    string[] dataSet2_31 = dataOfSecond.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
+                    string[] dataSet2_32 = dataSet2_31[1].Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
 
-                    string[] delimiters10 = new string[] { " - ", " – " };
-                    string[] dataSet10 = dataSet9[1].Split(delimiters10, StringSplitOptions.RemoveEmptyEntries);
+                    dataOfSecond = dataSet2_31[0] + "\n";
 
-                    dataOfSecond = dataSet9[0] + "\n";
-
-                    foreach (string s in dataSet10)
+                    foreach (string s in dataSet2_32)
                     {
                         dataOfSecond += "\n" + s.Trim();
                     }
+                    lbl_result2_1.Text = dataOfSecond;
 
-                    lbl_result2_1.Text = decodeHtml(dataOfSecond);
+                    // --------------------------------------------------------------------------------------------------------
+                    // Zweite Apotheke (bedingt optional)
                     if (dataOfSecond2 == String.Empty)
                     {
                         lbl_result2_2.Text = "";
                     }
                     else
                     {
-                        string[] delimiters11 = new string[] { "(", ")" };
-                        string[] dataSet11 = dataOfSecond2.Split(delimiters11, StringSplitOptions.RemoveEmptyEntries);
+                        string[] dataSet2_41 = dataOfSecond2.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
+                        string[] dataSet2_42 = dataSet2_41[1].Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
 
-                        string[] delimiters12 = new string[] { " - ", " – " };
-                        string[] dataSet12 = dataSet11[1].Split(delimiters12, StringSplitOptions.RemoveEmptyEntries);
+                        dataOfSecond2 = dataSet2_41[0] + "\n";
 
-                        dataOfSecond2 = dataSet11[0] + "\n";
-
-                        foreach (string s in dataSet12)
+                        foreach (string s in dataSet2_42)
                         {
                             dataOfSecond2 += "\n" + s.Trim();
                         }
-
-                        lbl_result2_2.Text = decodeHtml(dataOfSecond2);
+                        lbl_result2_2.Text = dataOfSecond2;
                     }
 
-                    // Letzte Ergebnisse speichern, falls z.B. Netzwerkprobleme auftreten.
-                    lastResults[0] = lbl_result1_1.Text;
-                    lastResults[1] = lbl_result1_2.Text;
-                    lastResults[2] = lbl_result2_1.Text;
-                    lastResults[3] = lbl_result2_2.Text;
                 }
-
-                // Kein Netzwerkfehler aufgetreten
-                lbl_neterror.Visible = false;
-            } catch (WebException)
+            } catch (FileNotFoundException)
             {
-                // Netzwerkfehler beim Abrufen der Daten. Information anzeigen.
-                lbl_neterror.Visible = true;
+                Cursor.Show();
+                isCursorHidden = false;
 
-                // Ergebnisse der letzten erfolgreichen Datensammlung anzeigen
-                lbl_result1_1.Text = lastResults[0];
-                lbl_result1_2.Text = lastResults[1];
-                lbl_result2_1.Text = lastResults[2];
-                lbl_result2_2.Text = lastResults[3];
+                MessageBox.Show("Fehler beim Zugriff auf die Datenbank. Befindet sich diese im vorgebenen Pfad?", "FileNotFoundException", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            
-        }
 
-        private void btn_get_Click(object sender, EventArgs e)
-        {
-            getDataFromWebsite();
-        }
-
-        private string decodeHtml (String s)
-        {
-            return WebUtility.HtmlDecode(s);
         }
 
         private void frm_main_MouseMove(object sender, MouseEventArgs e)
@@ -474,7 +443,7 @@ namespace ApoInfo
 
         private void trm_updateData_Tick(object sender, EventArgs e)
         {
-            getDataFromWebsite();
+            getDataFromLocalFile();
         }
 
         private void tmr_updateOnce_Tick(object sender, EventArgs e)
@@ -482,7 +451,7 @@ namespace ApoInfo
             // Ausloesen einer Aktuallisierung um 9 Uhr
             if (DateTime.Now.Hour == 9 && DateTime.Now.Minute == 0 && DateTime.Now.Second == 0)
             {
-                getDataFromWebsite();
+                getDataFromLocalFile();
             }
         }
 
