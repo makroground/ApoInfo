@@ -209,7 +209,7 @@ namespace ApoInfo
             // Frisch aus Excel exportierte XML mit einfacher Hirachie (kompatitibilitaet) erweitern
             try
             {
-                var fileName = Directory.GetCurrentDirectory() + "\\Notdienstdatenbank.xml";
+                var fileName = AppDomain.CurrentDomain.BaseDirectory + "\\Notdienstdatenbank.xml";
                 var txtLines = File.ReadAllLines(fileName).ToList();
 
                 if (!txtLines.Contains("<Tage>"))
@@ -235,7 +235,7 @@ namespace ApoInfo
                 {
                     using (StreamWriter writer = new StreamWriter(stream))
                     {
-                        writer.Write(File.ReadAllText(Directory.GetCurrentDirectory() + "\\Notdienstdatenbank.xml"));
+                        writer.Write(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "\\Notdienstdatenbank.xml"));
                         writer.Flush();
                         stream.Position = 0;
                         notdienstListe = xmlS.Deserialize(stream) as Notdienstliste;
