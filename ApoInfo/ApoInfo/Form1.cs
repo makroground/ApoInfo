@@ -23,6 +23,9 @@ namespace ApoInfo
         private String[] lastResults = { "-\n-\n-\n-\n-", "-\n-\n-\n-\n-", "-\n-\n-\n-\n-", "-\n-\n-\n-\n-" };
         private Tag aktuellerTagessatz;
 
+        string[] delimiters1 = new string[] { "(", ")" };
+        string[] delimiters2 = new string[] { " - ", " – " };
+
         // Ergebnis von 0 bis 9 Uhr weiterhin gültig
         private static int noRefreshTimeStart = 0;
         private static int noRefreshTimeEnd = 9;
@@ -44,10 +47,10 @@ namespace ApoInfo
             this.WindowState = FormWindowState.Maximized;
             //this.TopMost = true;
 
-            lbl_result1_1.Text = lastResults[0];
-            lbl_result1_2.Text = lastResults[1];
-            lbl_result2_1.Text = lastResults[2];
-            lbl_result2_2.Text = lastResults[3];
+            lbl_result1.Text = lastResults[0];
+            lbl_result2.Text = lastResults[1];
+            lbl_result3.Text = lastResults[2];
+            lbl_result4.Text = lastResults[3];
 
             setSkaling();
 
@@ -99,25 +102,25 @@ namespace ApoInfo
             label1.Top = (pnl_first1.Height - label1.Height) / 2;
             label1.Left = pnl_first1.Width / 100 * 3;
 
-            lbl_result1_1.Font = new Font(lbl_result1_1.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
-            lbl_result1_1.Top = (pnl_result1_1.Height - lbl_result1_1.Height) / 2;
-            lbl_result1_1.Left = pnl_first1.Width / 100 * 6;
+            lbl_result1.Font = new Font(lbl_result1.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_result1.Top = (pnl_result1.Height - lbl_result1.Height) / 2;
+            lbl_result1.Left = pnl_first1.Width / 100 * 6;
 
-            lbl_result1_2.Font = new Font(lbl_result1_2.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
-            lbl_result1_2.Top = (pnl_result1_2.Height - lbl_result1_2.Height) / 2;
-            lbl_result1_2.Left = pnl_first1.Width / 100 * 6;
+            lbl_result2.Font = new Font(lbl_result2.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_result2.Top = (pnl_result2.Height - lbl_result2.Height) / 2;
+            lbl_result2.Left = pnl_first1.Width / 100 * 6;
 
             label2.Font = new Font(label2.Font.Name, 50, FontStyle.Bold, GraphicsUnit.Point);
             label2.Top = (pnl_second1.Height - label2.Height) / 2;
             label2.Left = pnl_second1.Width / 100 * 3;
 
-            lbl_result2_1.Font = new Font(lbl_result2_1.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
-            lbl_result2_1.Top = (pnl_result1_1.Height - lbl_result1_1.Height) / 2;
-            lbl_result2_1.Left = pnl_second1.Width / 100 * 6;
+            lbl_result3.Font = new Font(lbl_result3.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_result3.Top = (pnl_result1.Height - lbl_result1.Height) / 2;
+            lbl_result3.Left = pnl_second1.Width / 100 * 6;
 
-            lbl_result2_2.Font = new Font(lbl_result1_2.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
-            lbl_result2_2.Top = (pnl_result2_2.Height - lbl_result2_2.Height) / 2;
-            lbl_result2_2.Left = pnl_second1.Width / 100 * 6;
+            lbl_result4.Font = new Font(lbl_result2.Font.Name, 31, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_result4.Top = (pnl_result4.Height - lbl_result4.Height) / 2;
+            lbl_result4.Left = pnl_second1.Width / 100 * 6;
 
             //skalingLabelLeft(label1, pnl_first1, 0, 70, 3, FontStyle.Bold);
             //skalingLabelLeft(lbl_result1_1, pnl_result1_1, 15, 15, 15, FontStyle.Regular);
@@ -164,27 +167,29 @@ namespace ApoInfo
         {
             skallingPanelCenter(pnl_first1, 25, 3, 10);
 
-            pnl_result1_1.Top = this.Height / 100 * 35;
-            pnl_result1_1.Height = this.Height / 100 * 27;
-            pnl_result1_1.Left = this.Width / 100 * 3;
-            pnl_result1_1.Width = pnl_first1.Width / 2;
+            int shrinkResultPanel = this.Width / 100 * 1;
 
-            pnl_result1_2.Top = this.Height / 100 * 35;
-            pnl_result1_2.Height = this.Height / 100 * 27;
-            pnl_result1_2.Left = this.Width / 100 * 3 + pnl_result1_1.Width;
-            pnl_result1_2.Width = pnl_first1.Width / 2;
+            pnl_result1.Top = this.Height / 100 * 37;
+            pnl_result1.Height = this.Height / 100 * 31;
+            pnl_result1.Left = this.Width / 100 * 4;
+            pnl_result1.Width = this.Width / 100 * 46;
+
+            pnl_result2.Top = this.Height / 100 * 37;
+            pnl_result2.Height = this.Height / 100 * 31;
+            pnl_result2.Left = this.Width / 100 * 51;
+            pnl_result2.Width = this.Width / 100 * 46;
             
-            skallingPanelCenter(pnl_second1, 65, 3, 10);
+            //skallingPanelCenter(pnl_second1, 65, 3, 10);
 
-            pnl_result2_1.Top = this.Height / 100 * 75;
-            pnl_result2_1.Height = this.Height / 100 * 27;
-            pnl_result2_1.Left = this.Width / 100 * 3;
-            pnl_result2_1.Width = pnl_second1.Width / 2;
+            pnl_result3.Top = this.Height / 100 * 70;
+            pnl_result3.Height = this.Height / 100 * 31;
+            pnl_result3.Left = this.Width / 100 * 4;
+            pnl_result3.Width = this.Width / 100 * 46;
 
-            pnl_result2_2.Top = this.Height / 100 * 75;
-            pnl_result2_2.Height = this.Height / 100 * 27;
-            pnl_result2_2.Left = this.Width / 100 * 3 + pnl_result2_1.Width;
-            pnl_result2_2.Width = pnl_second1.Width / 2;
+            pnl_result4.Top = this.Height / 100 * 70;
+            pnl_result4.Height = this.Height / 100 * 31;
+            pnl_result4.Left = this.Width / 100 * 51;
+            pnl_result4.Width = this.Width / 100 * 46;
 
         }
 
@@ -270,123 +275,72 @@ namespace ApoInfo
 
                 if (!resultDayFound)
                 {
-                    lbl_result1_1.Text = "Fehler. Kein Notdienst registriert.";
-                    lbl_result1_2.Text = "";
-                    lbl_result2_1.Text = "Fehler. Kein Notdienst registriert.";
-                    lbl_result2_2.Text = "";
+                    lbl_result1.Text = "Fehler. Kein Notdienst registriert.";
+                    lbl_result2.Text = "";
+                    lbl_result3.Text = "Fehler. Kein Notdienst registriert.";
+                    lbl_result4.Text = "";
                 }
                 else
                 {
-
                     string dataOfFirst = string.Empty;
-                    string dataOfFirst2 = string.Empty;
                     string dataOfSecond = string.Empty;
-                    string dataOfSecond2 = string.Empty;
+                    string dataOfThird = string.Empty;
+                    string dataOfFourth = string.Empty;
 
-                    string[] delimiters1 = new string[] { " und " };
-                    string[] delimiters2 = new string[] { "(", ")" };
-                    string[] delimiters3 = new string[] { " - ", " – " };
-
-                    // Bei Benennung mehrerer Apotheken pro Schicht den Schichtsatz aufteilen
-                    // --------------------------------------------------------------------------------------------------------
-                    // Betrifft die Schicht 9 - 9 Uhr
-                    if (aktuellerTagessatz.ganzerTag_eins.Contains(" und "))
+                    if (aktuellerTagessatz.InhaltApotheke_eins != null)
                     {
-                        string[] dataSet1_1 = aktuellerTagessatz.ganzerTag_eins.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
+                        // --------------------------------------------------------------------------------------------------------
+                        // Erste Apotheke
+                        // Schicht 9 - 9 Uhr (24 Stunden)
+                        dataOfFirst = aktuellerTagessatz.InhaltApotheke_eins;
 
-                        dataOfFirst = dataSet1_1[0].Trim();
-
-                        dataOfFirst2 = dataSet1_1[1].Trim();
+                        lbl_result1.Text = convertResultSplittedToLines(dataOfFirst);
                     }
                     else
                     {
-                        dataOfFirst = aktuellerTagessatz.ganzerTag_eins;
+                        lbl_result1.Text = "";
                     }
 
-                    // --------------------------------------------------------------------------------------------------------
-                    // Betrifft die Schicht 9 - 22 Uhr
-                    if (aktuellerTagessatz.halberTag_eins.Contains(" und "))
+                    if (aktuellerTagessatz.InhaltApotheke_zwei != null)
                     {
+                        // --------------------------------------------------------------------------------------------------------
+                        // Zweite Apotheke
+                        // Schicht 9 - 9 Uhr (24 Stunden)
+                        dataOfSecond = aktuellerTagessatz.InhaltApotheke_zwei;
 
-                        string[] dataSet1_2 = aktuellerTagessatz.halberTag_eins.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
-
-                        dataOfSecond = dataSet1_2[0].Trim();
-
-                        dataOfSecond2 = dataSet1_2[1].Trim();
+                        lbl_result2.Text = convertResultSplittedToLines(dataOfSecond);
                     }
                     else
                     {
-                        dataOfSecond = aktuellerTagessatz.halberTag_eins;
+                        lbl_result2.Text = "";
                     }
 
-                    // Name der Apotheke von den Zusatzinformationen trennen und fuer spaetere Darstellung konfektionieren
-                    // Schicht 9 - 9 Uhr
-                    // --------------------------------------------------------------------------------------------------------
-                    // Erste Apotheke
-                    string[] dataSet2_11 = dataOfFirst.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
-                    string[] dataSet2_12 = dataSet2_11[1].Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
-
-                    dataOfFirst = dataSet2_11[0] + "\n";
-
-                    foreach (string s in dataSet2_12)
+                    if (aktuellerTagessatz.InhaltApotheke_drei != null)
                     {
-                        dataOfFirst += "\n" + s.Trim();
-                    }
-                    lbl_result1_1.Text = dataOfFirst;
+                        // --------------------------------------------------------------------------------------------------------
+                        // Dritte Apotheke
+                        // Schicht 9 - 9 Uhr (24 Stunden)
+                        dataOfThird = aktuellerTagessatz.InhaltApotheke_drei;
 
-                    // --------------------------------------------------------------------------------------------------------
-                    // Zweite Apotheke (bedingt optional)
-                    if (dataOfFirst2 == String.Empty)
-                    {
-                        lbl_result1_2.Text = "";
+                        lbl_result3.Text = convertResultSplittedToLines(dataOfThird);
                     }
                     else
                     {
-                        string[] dataSet2_21 = dataOfFirst2.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
-                        string[] dataSet2_22 = dataSet2_21[1].Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
-
-                        dataOfFirst2 = dataSet2_21[0] + "\n";
-
-                        foreach (string s in dataSet2_22)
-                        {
-                            dataOfFirst2 += "\n" + s.Trim();
-                        }
-                        lbl_result1_2.Text = dataOfFirst2;
+                        lbl_result3.Text = "";
                     }
 
-                    // Name der Apotheke von den Zusatzinformationen trennen und fuer spaetere Darstellung konfektionieren
-                    // Schicht 9 - 22 Uhr
-                    // --------------------------------------------------------------------------------------------------------
-                    // Erste Apotheke
-                    string[] dataSet2_31 = dataOfSecond.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
-                    string[] dataSet2_32 = dataSet2_31[1].Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
-
-                    dataOfSecond = dataSet2_31[0] + "\n";
-
-                    foreach (string s in dataSet2_32)
+                    if (aktuellerTagessatz.InhaltApotheke_vier != null)
                     {
-                        dataOfSecond += "\n" + s.Trim();
-                    }
-                    lbl_result2_1.Text = dataOfSecond;
+                        // --------------------------------------------------------------------------------------------------------
+                        // Vierte Apotheke
+                        // Schicht 9 - 9 Uhr (24 Stunden)
+                        dataOfFourth = aktuellerTagessatz.InhaltApotheke_vier;
 
-                    // --------------------------------------------------------------------------------------------------------
-                    // Zweite Apotheke (bedingt optional)
-                    if (dataOfSecond2 == String.Empty)
-                    {
-                        lbl_result2_2.Text = "";
+                        lbl_result4.Text = convertResultSplittedToLines(dataOfFourth);
                     }
                     else
                     {
-                        string[] dataSet2_41 = dataOfSecond2.Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
-                        string[] dataSet2_42 = dataSet2_41[1].Split(delimiters3, StringSplitOptions.RemoveEmptyEntries);
-
-                        dataOfSecond2 = dataSet2_41[0] + "\n";
-
-                        foreach (string s in dataSet2_42)
-                        {
-                            dataOfSecond2 += "\n" + s.Trim();
-                        }
-                        lbl_result2_2.Text = dataOfSecond2;
+                        lbl_result4.Text = "";
                     }
 
                 }
@@ -398,6 +352,23 @@ namespace ApoInfo
                 MessageBox.Show("Fehler beim Zugriff auf die Datenbank. Befindet sich diese im vorgebenen Pfad?", "FileNotFoundException", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
+        }
+
+        private string convertResultSplittedToLines(string dataOfDay)
+        {
+            // Name der Apotheke von den Zusatzinformationen trennen und fuer spaetere Darstellung aufbereiten
+            string formedValue = "";
+            string[] dataSet1 = dataOfDay.Split(delimiters1, StringSplitOptions.RemoveEmptyEntries);
+            string[] dataSet2 = dataSet1[1].Split(delimiters2, StringSplitOptions.RemoveEmptyEntries);
+
+            formedValue = dataSet1[0] + "\n";
+
+            foreach (string s in dataSet2)
+            {
+                formedValue += "\n" + s.Trim();
+            }
+
+            return formedValue;
         }
 
         private void frm_main_MouseMove(object sender, MouseEventArgs e)

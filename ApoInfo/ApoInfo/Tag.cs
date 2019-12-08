@@ -10,7 +10,9 @@ namespace ApoInfo
     public class Tag
     {
         public string Datum { get; set; }
-        public string ganzerTag_eins { get; set; }
-        public string halberTag_eins { get; set; }
+        public string InhaltApotheke_eins { get; set; }
+        public string InhaltApotheke_zwei { get; set; }
+        public string InhaltApotheke_drei { get; set; }
+        public string InhaltApotheke_vier { get; set; }
     }
 }
